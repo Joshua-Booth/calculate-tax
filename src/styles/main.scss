@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./utils/variables";
+@import "./utils/mixins";
+
+@import "./base/base";
+
+@import "./components/components";
+
+@import "./layouts/containers";
+@import "./layouts/navigation";

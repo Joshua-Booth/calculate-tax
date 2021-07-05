@@ -1,6 +1,6 @@
 {
   "name": "calculate-tax",
-  "version": "0.0.0-initial",
+  "version": "1.0.0",
   "description": "Calculate Tax",
   "main": "src/index.js",
   "repository": "https://github.com/Joshua-Booth/calculate-tax",

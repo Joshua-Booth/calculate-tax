@@ -59,6 +59,7 @@ export const shadows = stylex.defineVars({
   card: "0 24px 64px rgba(133, 140, 166, 0.28)",
   raised: "0 2px 8px rgba(0, 0, 0, 0.08)",
   accent: "0 8px 24px rgba(106, 99, 184, 0.32)",
+  docked: "0 -8px 16px -8px rgba(133, 140, 166, 0.32)",
   focusRing: "0 0 0 4px rgba(106, 99, 184, 0.22)",
 });
 

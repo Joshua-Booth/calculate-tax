@@ -42,6 +42,7 @@ export const TaxCode = meta.story({
 });
 
 export const TaxCodeHelp = meta.story({
+  parameters: figma("6241:202"),
   render: () => <TaxCodeField code="ME" />,
   play: async ({ canvas, userEvent }) => {
     await userEvent.click(

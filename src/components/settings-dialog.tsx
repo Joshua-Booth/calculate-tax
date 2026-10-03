@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 
-import type { Ref } from "react";
+import type { Ref, SelectHTMLAttributes } from "react";
 import {
   colors,
   fonts,
@@ -20,7 +20,11 @@ import {
   HOURS_PER_WEEK,
   parseHours,
 } from "@/lib/format";
-import { KIWISAVER_RATES, SECONDARY_CODE_OPTIONS } from "@/lib/tax";
+import {
+  KIWISAVER_RATES,
+  SECONDARY_CODE_OPTIONS,
+  SECONDARY_CODES,
+} from "@/lib/tax";
 
 import { Button } from "./button";
 import { Icon } from "./icons";
@@ -95,6 +99,23 @@ const styles = stylex.create({
     boxShadow: { default: null, ":focus-visible": shadows.focusRing },
     fontWeight: 700,
   },
+  // The browser's own arrow sits about 8px from the border, which looks
+  // cramped, so selects draw a chevron with the same inset as their text
+  select: {
+    appearance: "none",
+    paddingInlineEnd: `calc(${space.s12} * 2 + 20px)`,
+  },
+  selectBox: {
+    position: "relative",
+  },
+  chevron: {
+    position: "absolute",
+    top: "50%",
+    insetInlineEnd: space.s12,
+    transform: "translateY(-50%)",
+    color: colors.iconDefault,
+    pointerEvents: "none",
+  },
   // Stays red while focused, so the problem is still clear as you fix it
   controlInvalid: {
     borderColor: colors.textDanger,
@@ -118,18 +139,31 @@ const styles = stylex.create({
 const isSecondaryCode = (value: string): value is SecondaryCode =>
   SECONDARY_CODE_OPTIONS.some((o) => o.code === value);
 
+// The code and its income band. The rate goes in the hint below, so the label
+// fits a phone-width select.
 const codeLabel = ({
   code,
-  rate,
   from,
   upTo,
 }: (typeof SECONDARY_CODE_OPTIONS)[number]) => {
-  const range =
-    upTo === Infinity
-      ? `${formatWholeMoney(from)} and over`
-      : `${formatWholeMoney(from)} to ${formatWholeMoney(upTo)}`;
-  return `${code}: ${formatPercent(rate)}, total income ${range}`;
+  if (from === 0) return `${code}: up to ${formatWholeMoney(upTo)}`;
+  if (upTo === Infinity) return `${code}: ${formatWholeMoney(from)} and over`;
+  return `${code}: ${formatWholeMoney(from)} to ${formatWholeMoney(upTo)}`;
 };
+
+function Select({
+  children,
+  ...props
+}: Omit<SelectHTMLAttributes<HTMLSelectElement>, "className" | "style">) {
+  return (
+    <div {...stylex.props(styles.selectBox)}>
+      <select {...props} {...stylex.props(styles.control, styles.select)}>
+        {children}
+      </select>
+      <Icon name="chevron-down" size={20} xstyle={styles.chevron} />
+    </div>
+  );
+}
 
 export function SettingsDialog({
   dialogRef,
@@ -152,6 +186,7 @@ export function SettingsDialog({
   const ksId = useId();
   const hoursId = useId();
   const codeId = useId();
+  const codeHintId = useId();
   const hoursHintId = useId();
   const hoursErrorId = useId();
   const hoursInvalid = parseHours(hoursText) === null;
@@ -180,9 +215,8 @@ export function SettingsDialog({
           <label htmlFor={ksId} {...stylex.props(styles.label)}>
             KiwiSaver contribution
           </label>
-          <select
+          <Select
             id={ksId}
-            {...stylex.props(styles.control)}
             value={kiwiSaverRate}
             onChange={(e) => onKiwiSaverRateChange(Number(e.target.value))}
           >
@@ -192,7 +226,7 @@ export function SettingsDialog({
                 {isDefault ? " (default)" : ""}
               </option>
             ))}
-          </select>
+          </Select>
           <p {...stylex.props(styles.hint)}>
             3.5% is the default from 1 April 2026. 3% needs a temporary rate
             reduction.
@@ -236,9 +270,9 @@ export function SettingsDialog({
           <label htmlFor={codeId} {...stylex.props(styles.label)}>
             Secondary tax code
           </label>
-          <select
+          <Select
             id={codeId}
-            {...stylex.props(styles.control)}
+            aria-describedby={codeHintId}
             value={secondaryCode}
             onChange={(e) => {
               if (isSecondaryCode(e.target.value))
@@ -250,10 +284,12 @@ export function SettingsDialog({
                 {codeLabel(option)}
               </option>
             ))}
-          </select>
-          <p {...stylex.props(styles.hint)}>
-            For a second job. Pick the code for your total income from all your
-            jobs.
+          </Select>
+          <p id={codeHintId} {...stylex.props(styles.hint)}>
+            Used when Secondary income is on. Pick the band your total income
+            from all your jobs is in. {secondaryCode} takes{" "}
+            {formatPercent(SECONDARY_CODES[secondaryCode])} of every dollar from
+            that job.
           </p>
         </div>
 

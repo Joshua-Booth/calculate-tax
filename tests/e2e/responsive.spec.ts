@@ -8,7 +8,13 @@ import type { Page } from "@playwright/test";
 
 import { expect, test } from "@playwright/test";
 
-import { DESKTOP_MIN, setIncome, setTile, showResults } from "./helpers";
+import {
+  DESKTOP_MIN,
+  openSettings,
+  setIncome,
+  setTile,
+  showResults,
+} from "./helpers";
 
 const WIDTHS = [
   320, 340, 349, 350, 360, 375, 379, 380, 390, 414, 430, 480, 539, 540, 600,
@@ -193,6 +199,43 @@ test.describe("option tiles", () => {
           tiles.map((t) => Math.round(t.getBoundingClientRect().height))
         );
       expect(new Set(heights).size).toBe(1);
+    });
+  }
+});
+
+// Runs in the page: a select clips its text without an ellipsis, and the page
+// audit can't see inside one, so measure every option against the room it has
+function clippedOptions() {
+  const context = document.createElement("canvas").getContext("2d");
+  if (!context) return ["no canvas"];
+  const clipped: string[] = [];
+  for (const select of document.querySelectorAll("select")) {
+    const style = getComputedStyle(select);
+    context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const room =
+      select.clientWidth -
+      Number.parseFloat(style.paddingLeft) -
+      Number.parseFloat(style.paddingRight);
+    for (const option of select.options) {
+      const width = context.measureText(option.text).width;
+      if (width > room)
+        clipped.push(
+          `"${option.text}" needs ${Math.ceil(width)}px, has ${Math.floor(room)}px`
+        );
+    }
+  }
+  return clipped;
+}
+
+test.describe("settings dropdowns", () => {
+  for (const width of [320, 360, 390, 640, 1440]) {
+    test(`fit every option at ${width}px`, async ({ page, isMobile }) => {
+      test.skip(isMobile, "Desktop browsers set the width");
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/");
+      await openSettings(page);
+      await page.evaluate(() => document.fonts.ready);
+      expect(await page.evaluate(clippedOptions)).toEqual([]);
     });
   }
 });

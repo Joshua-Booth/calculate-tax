@@ -1,0 +1,50 @@
+/* Plain CSS only for what StyleX doesn't cover: the reset, native element defaults
+   and backdrops. Every StyleX style lands in a later layer, so it always wins.
+   The colours here are copied from src/styles/tokens.stylex.ts; keep them in sync. */
+@layer reset;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid #6a63b8;
+    outline-offset: 2px;
+  }
+
+  dialog::backdrop {
+    background: rgba(39, 45, 45, 0.32);
+  }
+
+  /* Lighter than the dialog's: the help popover is a hint, not a task */
+  [popover]::backdrop {
+    background: rgba(39, 45, 45, 0.24);
+  }
+}
+
+@stylex;

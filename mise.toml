@@ -1,0 +1,185 @@
+min_version = "2024.9.5"
+
+[tools]
+node = "24"
+pnpm = "11.1.2"
+
+[env]
+_.path = ["./node_modules/.bin"]
+
+# Config paths (the same layout as creact)
+[vars]
+eslint_config = "./config/eslint.config.ts"
+prettier_config = "./config/.prettierrc"
+prettier_ignore = "./config/.prettierignore"
+stylelint_config = "./config/.stylelintrc.json"
+playwright_config = "./config/playwright.config.ts"
+vitest_config = "./config/vitest.config.ts"
+knip_config = "./config/knip.config.ts"
+depcruise_config = "./config/.dependency-cruiser.js"
+cspell_config = "./config/cspell.json"
+lintstaged_config = "./config/.lintstagedrc"
+storybook_config = "./.storybook"
+
+[tasks.dev]
+description = "Start the development server"
+alias = "d"
+run = "next dev"
+
+[tasks.build]
+description = "Build the static site into out/"
+alias = "b"
+run = "next build"
+sources = ["src/**/*", "public/**/*", "package.json", "next.config.ts", "tsconfig.json"]
+outputs = ["out/**/*"]
+
+[tasks.preview]
+description = "Serve the built site on port 4173"
+alias = "p"
+depends = ["build"]
+run = "serve out -l 4173"
+
+[tasks.clean]
+description = "Remove build artifacts and caches"
+run = "rm -rf .next out storybook-static coverage playwright-report test-results"
+
+[tasks.format]
+description = "Format code with Prettier"
+alias = "f"
+run = "prettier --write \"**/*.{ts,tsx,js,mjs,css,json,yml,yaml,md}\" --config {{vars.prettier_config}} --ignore-path {{vars.prettier_ignore}} --cache"
+
+[tasks."format:files"]
+description = "Format specific files (for lint-staged)"
+hide = true
+run = "prettier --config {{vars.prettier_config}} --ignore-path {{vars.prettier_ignore}} --ignore-unknown --write"
+
+[tasks."format:check"]
+description = "Check formatting with Prettier"
+alias = "fc"
+run = "prettier --check \"**/*.{ts,tsx,js,mjs,css,json,yml,yaml,md}\" --config {{vars.prettier_config}} --ignore-path {{vars.prettier_ignore}} --cache"
+
+[tasks.lint]
+description = "Fix code with ESLint"
+alias = "l"
+run = "eslint . --config {{vars.eslint_config}} --max-warnings 0 --fix --cache"
+
+[tasks."lint:files"]
+description = "Lint specific files (for lint-staged)"
+hide = true
+run = "eslint --config {{vars.eslint_config}} --max-warnings 0 --fix"
+
+[tasks."lint:check"]
+description = "Check code with ESLint"
+alias = "lc"
+run = "eslint . --config {{vars.eslint_config}} --max-warnings 0 --cache"
+
+[tasks.stylelint]
+description = "Fix CSS with Stylelint"
+alias = "sl"
+run = "stylelint \"{src,.storybook}/**/*.css\" --config {{vars.stylelint_config}} --fix"
+
+[tasks."stylelint:files"]
+description = "Lint specific CSS files (for lint-staged)"
+hide = true
+run = "stylelint --config {{vars.stylelint_config}} --fix"
+
+[tasks."stylelint:check"]
+description = "Check CSS with Stylelint"
+alias = "slc"
+run = "stylelint \"{src,.storybook}/**/*.css\" --config {{vars.stylelint_config}}"
+
+[tasks.typecheck]
+description = "Run TypeScript type checking"
+alias = "tt"
+# Sequential, so a failure in either stops the task
+run = ["tsc --noEmit", "tsc --noEmit --project config/tsconfig.node.json"]
+
+[tasks.test]
+description = "Run unit tests"
+alias = "t"
+run = "vitest run --config {{vars.vitest_config}}"
+
+[tasks.coverage]
+description = "Run unit tests with coverage (the tax library must stay at 100%)"
+alias = "tc"
+run = "vitest run --config {{vars.vitest_config}} --coverage.enabled"
+
+[tasks."test:e2e"]
+description = "Run end-to-end and responsive tests against the built site"
+alias = "te"
+depends = ["build"]
+run = "playwright test --config {{vars.playwright_config}}"
+
+[tasks."test:e2e:ui"]
+description = "Run end-to-end tests in UI mode"
+alias = "teu"
+depends = ["build"]
+run = "playwright test --ui --config {{vars.playwright_config}}"
+
+[tasks.storybook]
+description = "Start Storybook on port 6006 (its MCP server is at /mcp)"
+alias = "sb"
+run = "storybook dev -p 6006 --config-dir {{vars.storybook_config}}"
+
+[tasks."storybook:build"]
+description = "Build Storybook into storybook-static/"
+alias = "sbb"
+run = "storybook build --config-dir {{vars.storybook_config}} -o storybook-static --quiet"
+
+[tasks."test:storybook"]
+description = "Run every story as a test in Chromium, with an accessibility check"
+alias = "tsb"
+run = "vitest run --config {{vars.storybook_config}}/vitest.config.ts"
+
+[tasks.knip]
+description = "Find unused files, dependencies and exports"
+alias = "k"
+run = "knip --config {{vars.knip_config}} --no-config-hints"
+
+[tasks.spell]
+description = "Check spelling with cspell"
+alias = "sp"
+run = "cspell . --config {{vars.cspell_config}} --no-progress"
+
+[tasks."spell:files"]
+description = "Spell check specific files (for lint-staged)"
+hide = true
+run = "cspell --config {{vars.cspell_config}} --no-must-find-files --no-progress"
+
+[tasks.depcruise]
+description = "Check dependency rules (no cycles, no orphans, lib stays pure)"
+alias = "dc"
+run = "depcruise src --config {{vars.depcruise_config}}"
+
+[tasks.audit]
+description = "Run a security audit for high-severity vulnerabilities"
+run = "pnpm audit --audit-level=high"
+
+[tasks.lintstaged]
+description = "Run lint-staged on staged files"
+run = "lint-staged --config {{vars.lintstaged_config}}"
+
+[tasks.fix]
+description = "Auto-fix formatting, lint and CSS"
+alias = "x"
+depends = ["format", "lint", "stylelint"]
+run = "echo 'All fixes applied!'"
+
+[tasks.check]
+description = "Run every CI check locally"
+alias = "c"
+depends = [
+    "audit",
+    "format:check",
+    "lint:check",
+    "stylelint:check",
+    "typecheck",
+    "coverage",
+    "test:storybook",
+    "storybook:build",
+    "test:e2e",
+    "knip",
+    "depcruise",
+    "spell",
+]
+run = "echo 'All checks passed!'"

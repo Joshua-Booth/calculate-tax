@@ -1,184 +1,82 @@
-<div align="center" style="text-align:center">
-  <h1 style="padding-top:0;margin-top:20px">Calculate Tax</h1>
-  <p style="padding-top:20px">A PWA for calculating New Zealand personal tax.</p>
+# Calculate Tax
 
-  <br />
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5dd901ac-5ae2-435d-863e-f7c4c9337a05/deploy-status)](https://app.netlify.com/projects/calculatetax/deploys)
+[![CI](https://github.com/Joshua-Booth/calculate-tax/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Joshua-Booth/calculate-tax/actions/workflows/ci.yml)
 
-[**Visit site**](https://calculatetax.nz/) ·
-[**Documentation**][wiki]
+Work out your take-home pay in New Zealand: income tax, the ACC earners' levy,
+KiwiSaver, student loan repayments and the independent earner tax credit, using
+2026–27 rates from Inland Revenue.
 
-  <br />
+I designed it in March 2020 as an Instagram post: one mobile screen, with a
+Results tab that was never drawn. In 2026 I tidied the design in Figma, designed
+the missing screens and a desktop layout, and built it as this site.
 
-  <p>
-    <a href="https://app.netlify.com/sites/calculatetax/deploys">
-      <img
-        alt="Netlify Build Status"
-        src="https://img.shields.io/netlify/5dd901ac-5ae2-435d-863e-f7c4c9337a05?label=build&style=for-the-badge"
-      />
-    </a>
-    <img 
-      alt="GitHub package.json version" 
-      src="https://img.shields.io/github/package-json/v/Joshua-Booth/calculate-tax?style=for-the-badge"
-    />
-    <img 
-      alt="Dependencies"
-      src="https://img.shields.io/david/Joshua-Booth/calculate-tax?style=for-the-badge"
-    />
-    <img 
-      alt="GitHub last commit" 
-      src="https://img.shields.io/github/last-commit/Joshua-Booth/calculate-tax?label=Last%20Update&style=for-the-badge"
-    />
-  </p>
+## How it works
 
-  <br />
+- `src/lib/tax.ts` holds the tax rules as plain functions with no UI. Every rate
+  cites its Inland Revenue page. It works on a year's income, so it's an
+  estimate: payroll rounds each pay, which can move the total by a few cents.
+- `src/components` is the UI. It's styled with [StyleX](https://stylexjs.com),
+  compiled to static CSS at build time, and the design tokens live in
+  `src/styles/tokens.stylex.ts`.
+- On desktop, Details and Results sit side by side and update as you type. On a
+  phone they're two tabs, as in the 2020 design.
+- Every component has stories in [Storybook](https://storybook.js.org), at
+  `/storybook` on the site. Each story links to its frame in my Figma file. The
+  file is private, so the Design panel only loads for people with access.
+- The site is a static export (`out/`), hosted on Netlify.
 
-<sub>Developed by <a href="https://joshuabooth.nz">Joshua Booth</a></sub>
+## Run it
 
-  <br />
-
-  <hr />
-  <p>
-    <a href="#about">About</a> |
-    <a href="#requirements">Requirements</a> |
-    <a href="#installation">Installation</a> |
-    <a href="#installation">Setup</a> |
-    <a href="#installation">Usage</a> |
-    <a href="#support">Support</a> |
-    <a href="#license">License</a>
-  </p>
-  <hr />
-</div>
-
-[wiki]: https://github.com/Joshua-Booth/calculate-tax/wiki/Home/
-
-## About
-
-### The problem
-
-Existing NZ tax calculators haven't been designed with the user in mind. They
-often sacrifice UX for more features or have a poor UI design which negatively
-influences people's perception of the UX.
-
-### The solution
-
-The goal of this progressive web app is have a minimal and easy to use interface
-for calculating tax on your personal income.
-
-<p style="padding-bottom: 20px">
- Check out the
-  <a href="https://github.com/Joshua-Booth/calculate-tax/wiki/Home/">
-    wiki
-  </a>
-  for more information about this project.
-</p>
-
-## Requirements
-
-This project requires the following:
-
-- [Git](https://git-scm.com/downloads)
-- [Node.js 14.16+](https://nodejs.org/en/download/)
-- [npm 7.0.0+](https://nodejs.org/en/download/)
-
-### Other useful global dependencies
-
-- [git-cz](https://www.npmjs.com/package/git-cz)
-- [npm-check-updates](https://www.npmjs.com/package/npm-check-updates)
-- [prettier](https://www.npmjs.com/package/prettier)
-
-## Installation
+This project uses [mise](https://mise.jdx.dev) for Node, pnpm and every task.
 
 ```sh
-> git clone https://github.com/Joshua-Booth/calculate-tax.git   # Clone the repository
-
-> cd calculate-tax     # Change into the 'calculate-tax' directory
-
-> npm install   # Install all the project's dependencies
+mise install        # Node 24 and pnpm
+pnpm install
+mise run dev        # http://localhost:3000
+mise run check      # every CI check
 ```
 
-**Ensure the `NODE_ENV` environment variable is either undefined or set to `'development'` before installing dependencies.**
+| Task                      | What it does                                                 |
+| ------------------------- | ------------------------------------------------------------ |
+| `mise run build`          | Builds the static site into `out/`                           |
+| `mise run preview`        | Serves the build on port 4173                                |
+| `mise run test`           | Unit tests, including every combination of options and codes |
+| `mise run coverage`       | Unit tests with coverage; `src/lib` must stay at 100%        |
+| `mise run test:e2e`       | Browser tests and a width sweep from 320px to 1920px         |
+| `mise run storybook`      | Storybook on port 6006, with its MCP server at `/mcp`        |
+| `mise run test:storybook` | Every story as a test, with an accessibility check           |
+| `mise run lint`           | ESLint, with fixes                                           |
+| `mise run format`         | Prettier                                                     |
+| `mise run stylelint`      | Stylelint                                                    |
+| `mise run typecheck`      | TypeScript for the app and the config files                  |
+| `mise run knip`           | Unused files, exports and dependencies                       |
+| `mise run depcruise`      | Dependency rules, including that `src/lib` stays UI-free     |
+| `mise run spell`          | cspell, in New Zealand English                               |
+| `mise run audit`          | High-severity advisories                                     |
 
-## Setup
+The lint, format, commit and CI setup follows my
+[creact](https://github.com/Joshua-Booth/creact) template, adapted for Next.js.
+Commits use Conventional Commits, checked by commitlint.
 
-Create three env files (.prod, .dev, .test) in an `env` directory in [config](/config).
+## Rates (2026–27)
 
-```sh
-> mkdir ./config/env
-> cd ./config/env
+| Rule                          | Value                                                                         |
+| ----------------------------- | ----------------------------------------------------------------------------- |
+| Income tax                    | 10.5% to $15,600, 17.5% to $53,500, 30% to $78,100, 33% to $180,000, 39% over |
+| ACC earners' levy             | 1.75%, on earnings up to $156,641                                             |
+| Student loan                  | 12% over $24,128 a year; 12% of all income from a second job                  |
+| KiwiSaver                     | 3.5% default from 1 April 2026; 3%, 4%, 6%, 8% or 10%                         |
+| Independent earner tax credit | $520 a year from $24,000 to $66,000, less 13c a dollar to $70,000             |
+| Secondary tax codes           | SB 10.5%, S 17.5%, SH 30%, ST 33%, SA 39%                                     |
 
-> touch .prod .dev .test   # Windows: cd > .prod && cd > .dev && cd > .test
-```
+When the rates change, update `src/lib/tax.ts` with the new IRD source, then the
+tests that pin the worked examples.
 
-Add the following environment variables for development (.dev) and production (.prod):
+## Licence
 
-| Variable name                      | Required | Description                                                                                            |
-| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| `NODE_VERSION`                     | False    | This app's Node version (should be equal or greater than `14.16`)                                      |
-| `REACT_APP_ROOT_URL`               | True     | Your API's URL (e.g. `localhost:8000` for dev and `https://api.example.com/` for prod)                 |
-| `REACT_APP_PUBLIC_URL`             | True     | This app's public URL (e.g. `localhost:8080/public` for dev and `https://example.com/public` for prod) |
-| `REACT_APP_GA_TRACKING_ID`         | False    | Google Analytics tracking id (e.g. `UA-123456789-1`)                                                   |
-| `REACT_APP_HOTJAR_SNIPPET_VERSION` | False    | Hotjar snippet version (Also called 'hjsv')                                                            |
-| `REACT_APP_HOTJAR_TRACKING_ID`     | False    | Hotjar tracking id (Also called 'hjid')                                                                |
-| `REACT_APP_SENTRY_DSN`             | False    | [Sentry DSN]                                                                                           |
+© 2020–2026 Joshua Booth. All rights reserved. The code isn't open source, so
+please ask before reusing it.
 
-[sentry dsn]: https://docs.sentry.io/product/sentry-basics/dsn-explainer/
-
-## Usage
-
-To use the application use the following commands:
-
-### Production
-
-Run `npm run build` to build the static files for production.
-
-Run `npm start prod` to serve the production files.
-
-:sparkles: Visit the site on the localhost URL.
-
-### Development
-
-Run `npm start dev` to start the webpack dev server for the web app.
-
-:sparkles: Visit the site on the localhost URL.
-
-### Testing
-
-```sh
-> npm t                # Unit tests
-
-> npm start test.it    # Integration tests
-
-> npm start test.e2e   # End-to-end tests
-
-> npm start coverage   # Full test coverage report (unit, integration and e2e combined)
-```
-
-`npm t` starts the unit tests in watch mode, but you can also set the environment variable `CI`
-to run the tests in continuous integration mode (this also works for integration and end-to-end tests).
-
-### Other
-
-Run `npm start help` for a full list of available commands.
-
-## Support
-
-Do you need some help? Check the out articles in the [wiki].
-
-Check the [issues](https://github.com/Joshua-Booth/calculate-tax/issues) page to see if there is an open issue with a
-potential workaround.
-
-### Additional Support
-
-Reach out to me for support through the following methods:
-
-- Email: [contact@joshuabooth.nz](mailto:contact@joshuabooth.nz)
-- Website: [joshuabooth.nz/contact](https://joshuabooth.nz/contact)
-
-## License
-
-This project is the sole property of Joshua Booth.
-
-Copyright &copy; 2021 Joshua Booth
-
-Please see individual licenses contained in the project where third-party
-code was used, as this code is owned by it's respective authors.
+The Lato font is © tyPoland Lukasz Dziedzic, under the SIL Open Font License
+1.1. See `src/app/fonts/README.md`.

@@ -4,7 +4,7 @@
   "embeddedLanguageFormatting": "auto",
   "htmlWhitespaceSensitivity": "css",
   "insertPragma": false,
-  "jsxBracketSameLine": false,
+  "bracketSameLine": false,
   "jsxSingleQuote": false,
   "printWidth": 80,
   "proseWrap": "preserve",
@@ -15,5 +15,24 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "useTabs": false,
-  "vueIndentScriptAndStyle": false
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<TYPES>",
+    "<BUILTIN_MODULES>",
+    "",
+    "^react$",
+    "^react-dom(/.*)?$",
+    "^next(/.*)?$",
+    "",
+    "<TYPES>^[^@/.]",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "<TYPES>^@/",
+    "^@/lib(/.*)?$",
+    "^@/components(/.*)?$",
+    "",
+    "<TYPES>^[.]",
+    "^[.]"
+  ],
+  "importOrderTypeScriptVersion": "5.0.0"
 }

@@ -21,6 +21,9 @@ the missing screens and a desktop layout, and built it as this site.
   `src/styles/tokens.stylex.ts`.
 - On desktop, Details and Results sit side by side and update as you type. On a
   phone they're two tabs, as in the 2020 design.
+- Every component has stories in [Storybook](https://storybook.js.org), at
+  `/storybook` on the site. Each story links to its frame in my Figma file. The
+  file is private, so the Design panel only loads for people with access.
 - The site is a static export (`out/`), hosted on Netlify.
 
 ## Run it
@@ -34,21 +37,23 @@ mise run dev        # http://localhost:3000
 mise run check      # every CI check
 ```
 
-| Task                 | What it does                                                 |
-| -------------------- | ------------------------------------------------------------ |
-| `mise run build`     | Builds the static site into `out/`                           |
-| `mise run preview`   | Serves the build on port 4173                                |
-| `mise run test`      | Unit tests, including every combination of options and codes |
-| `mise run coverage`  | Unit tests with coverage; `src/lib` must stay at 100%        |
-| `mise run test:e2e`  | Browser tests and a width sweep from 320px to 1920px         |
-| `mise run lint`      | ESLint, with fixes                                           |
-| `mise run format`    | Prettier                                                     |
-| `mise run stylelint` | Stylelint                                                    |
-| `mise run typecheck` | TypeScript for the app and the config files                  |
-| `mise run knip`      | Unused files, exports and dependencies                       |
-| `mise run depcruise` | Dependency rules, including that `src/lib` stays UI-free     |
-| `mise run spell`     | cspell, in New Zealand English                               |
-| `mise run audit`     | High-severity advisories                                     |
+| Task                      | What it does                                                 |
+| ------------------------- | ------------------------------------------------------------ |
+| `mise run build`          | Builds the static site into `out/`                           |
+| `mise run preview`        | Serves the build on port 4173                                |
+| `mise run test`           | Unit tests, including every combination of options and codes |
+| `mise run coverage`       | Unit tests with coverage; `src/lib` must stay at 100%        |
+| `mise run test:e2e`       | Browser tests and a width sweep from 320px to 1920px         |
+| `mise run storybook`      | Storybook on port 6006, with its MCP server at `/mcp`        |
+| `mise run test:storybook` | Every story as a test, with an accessibility check           |
+| `mise run lint`           | ESLint, with fixes                                           |
+| `mise run format`         | Prettier                                                     |
+| `mise run stylelint`      | Stylelint                                                    |
+| `mise run typecheck`      | TypeScript for the app and the config files                  |
+| `mise run knip`           | Unused files, exports and dependencies                       |
+| `mise run depcruise`      | Dependency rules, including that `src/lib` stays UI-free     |
+| `mise run spell`          | cspell, in New Zealand English                               |
+| `mise run audit`          | High-severity advisories                                     |
 
 The lint, format, commit and CI setup follows my
 [creact](https://github.com/Joshua-Booth/creact) template, adapted for Next.js.

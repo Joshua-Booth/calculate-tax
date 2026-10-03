@@ -37,7 +37,8 @@ export default {
       severity: "error",
       comment: "This module depends on a module that cannot be found.",
       from: {},
-      to: { couldNotResolve: true },
+      // Vite serves virtual: modules itself, like the StyleX dev runtime
+      to: { couldNotResolve: true, pathNot: "^virtual:" },
     },
     {
       name: "no-non-package-json",
@@ -51,8 +52,8 @@ export default {
       name: "not-to-dev-dep",
       severity: "error",
       comment:
-        "App code must not import devDependencies; they aren't installed in production builds.",
-      from: { path: "^src", pathNot: "\\.test\\.ts$" },
+        "App code must not import devDependencies; they aren't installed in production builds. Tests and stories are dev-only.",
+      from: { path: "^src", pathNot: "\\.(test\\.ts|stories\\.tsx)$" },
       to: { dependencyTypes: ["npm-dev"] },
     },
   ],

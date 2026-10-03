@@ -19,6 +19,7 @@ knip_config = "./config/knip.config.ts"
 depcruise_config = "./config/.dependency-cruiser.js"
 cspell_config = "./config/cspell.json"
 lintstaged_config = "./config/.lintstagedrc"
+storybook_config = "./.storybook"
 
 [tasks.dev]
 description = "Start the development server"
@@ -40,7 +41,7 @@ run = "serve out -l 4173"
 
 [tasks.clean]
 description = "Remove build artifacts and caches"
-run = "rm -rf .next out coverage playwright-report test-results"
+run = "rm -rf .next out storybook-static coverage playwright-report test-results"
 
 [tasks.format]
 description = "Format code with Prettier"
@@ -75,7 +76,7 @@ run = "eslint . --config {{vars.eslint_config}} --max-warnings 0 --cache"
 [tasks.stylelint]
 description = "Fix CSS with Stylelint"
 alias = "sl"
-run = "stylelint \"src/**/*.css\" --config {{vars.stylelint_config}} --fix"
+run = "stylelint \"{src,.storybook}/**/*.css\" --config {{vars.stylelint_config}} --fix"
 
 [tasks."stylelint:files"]
 description = "Lint specific CSS files (for lint-staged)"
@@ -85,7 +86,7 @@ run = "stylelint --config {{vars.stylelint_config}} --fix"
 [tasks."stylelint:check"]
 description = "Check CSS with Stylelint"
 alias = "slc"
-run = "stylelint \"src/**/*.css\" --config {{vars.stylelint_config}}"
+run = "stylelint \"{src,.storybook}/**/*.css\" --config {{vars.stylelint_config}}"
 
 [tasks.typecheck]
 description = "Run TypeScript type checking"
@@ -114,6 +115,21 @@ description = "Run end-to-end tests in UI mode"
 alias = "teu"
 depends = ["build"]
 run = "playwright test --ui --config {{vars.playwright_config}}"
+
+[tasks.storybook]
+description = "Start Storybook on port 6006 (its MCP server is at /mcp)"
+alias = "sb"
+run = "storybook dev -p 6006 --config-dir {{vars.storybook_config}}"
+
+[tasks."storybook:build"]
+description = "Build Storybook into storybook-static/"
+alias = "sbb"
+run = "storybook build --config-dir {{vars.storybook_config}} -o storybook-static --quiet"
+
+[tasks."test:storybook"]
+description = "Run every story as a test in Chromium, with an accessibility check"
+alias = "tsb"
+run = "vitest run --config {{vars.storybook_config}}/vitest.config.ts"
 
 [tasks.knip]
 description = "Find unused files, dependencies and exports"
@@ -159,6 +175,8 @@ depends = [
     "stylelint:check",
     "typecheck",
     "coverage",
+    "test:storybook",
+    "storybook:build",
     "test:e2e",
     "knip",
     "depcruise",

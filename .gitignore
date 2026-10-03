@@ -50,3 +50,7 @@ next-env.d.ts
 .eslintcache
 .cache
 .claude/worktrees/
+
+# storybook
+/storybook-static/
+debug-storybook.log

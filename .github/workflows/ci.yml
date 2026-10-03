@@ -84,6 +84,22 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+  storybook:
+    name: Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run story tests
+        run: mise run test:storybook
+
+      - name: Build Storybook
+        run: mise run storybook:build
+
   security-audit:
     name: Security Audit
     runs-on: ubuntu-latest

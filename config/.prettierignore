@@ -1,6 +1,7 @@
 # Build output
 .next
 out
+storybook-static
 coverage
 test-results
 playwright-report

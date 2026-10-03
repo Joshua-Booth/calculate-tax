@@ -1,7 +1,8 @@
-# Netlify builds the static export and serves out/. Node comes from .node-version,
-# pnpm from the packageManager field in package.json.
+# Netlify builds the static export and serves out/, with Storybook at
+# /storybook. Node comes from .node-version, pnpm from the packageManager field
+# in package.json.
 [build]
-  command = "pnpm build"
+  command = "pnpm build && pnpm exec storybook build --config-dir .storybook -o out/storybook --quiet"
   publish = "out"
 
 [build.environment]
@@ -12,7 +13,8 @@
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "DENY"
+    # SAMEORIGIN rather than DENY: Storybook shows each story in a frame of its own page
+    X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 

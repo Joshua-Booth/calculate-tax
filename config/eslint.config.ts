@@ -1,5 +1,5 @@
 // ESLint, adapted from creact (config/eslint.config.ts) for a Next.js app.
-// Dropped from creact: Storybook, Tailwind, Zod, FSD paths and Node server rules.
+// Dropped from creact: Tailwind, Zod, FSD paths and Node server rules.
 // Added: @next/eslint-plugin-next, and the StyleX rules from the personal website.
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference -- ambient module decls for untyped eslint plugins
 /// <reference path="./eslint-plugins.d.ts" />
@@ -21,6 +21,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactYouMightNotNeedAnEffect from "eslint-plugin-react-you-might-not-need-an-effect";
 import security from "eslint-plugin-security";
 import sonarjs from "eslint-plugin-sonarjs";
+import storybook from "eslint-plugin-storybook";
 import unicorn from "eslint-plugin-unicorn";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
@@ -91,6 +92,19 @@ export default defineConfig([
   // Security
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- incomplete types
   security.configs.recommended,
+
+  // Storybook
+  ...storybook.configs["flat/recommended"],
+
+  // Stories: render callbacks are lowercase functions, so hooks rules would
+  // flag the useState and useRef calls some stories need
+  {
+    files: ["**/*.stories.{ts,tsx}"],
+    rules: {
+      "@eslint-react/rules-of-hooks": "off",
+      "react-hooks/rules-of-hooks": "off",
+    },
+  },
 
   // Dependencies: suggest lighter or native alternatives
   // @ts-expect-error -- configs is typed as possibly undefined
@@ -339,6 +353,7 @@ export default defineConfig([
     ignores: [
       ".next/**",
       "out/**",
+      "storybook-static/**",
       "coverage",
       "test-results",
       "playwright-report",

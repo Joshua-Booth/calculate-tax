@@ -18,6 +18,8 @@ const config: KnipConfig = {
     // Loaded by name from babel.config.js, and the peer of the StyleX PostCSS plugin
     "@stylexjs/babel-plugin",
     "postcss",
+    // Imported from .storybook/fonts.css, which knip doesn't read
+    "@fontsource/lato",
   ],
 
   // System tools (not npm packages)
@@ -28,7 +30,7 @@ const config: KnipConfig = {
   },
 
   vitest: {
-    config: ["config/vitest.config.ts"],
+    config: ["config/vitest.config.ts", ".storybook/vitest.config.ts"],
     entry: ["src/**/*.test.ts"],
   },
 

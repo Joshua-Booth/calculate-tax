@@ -1,5 +1,4 @@
-// Design tokens from the Figma file Tax Calculator, page "🛠 2026 build": the Web
-// collection (colour, space, radius, stroke), Web text styles and Web/Shadow effects.
+// The design tokens: colour, space, radius, stroke, shadow and type.
 import * as stylex from "@stylexjs/stylex";
 
 export const colors = stylex.defineVars({

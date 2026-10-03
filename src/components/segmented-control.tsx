@@ -28,7 +28,7 @@ const styles = stylex.create({
     fontWeight: 700,
     color: colors.textAccent,
   },
-  // Segments hug their text with 12px either side, as in the Figma component.
+  // Segments hug their text with 12px either side, as in the design.
   // There's no gap: only the selected pill is visible, and the padding spaces the
   // labels. On small phones the text and padding shrink so all five periods fit
   // (checked down to 320px by the e2e width sweep).

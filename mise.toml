@@ -66,7 +66,7 @@ run = "eslint . --config {{vars.eslint_config}} --max-warnings 0 --fix --cache"
 [tasks."lint:files"]
 description = "Lint specific files (for lint-staged)"
 hide = true
-run = "eslint --config {{vars.eslint_config}} --max-warnings 0 --fix"
+run = "eslint --config {{vars.eslint_config}} --max-warnings 0 --no-warn-ignored --fix"
 
 [tasks."lint:check"]
 description = "Check code with ESLint"

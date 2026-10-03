@@ -15,6 +15,9 @@ const config: KnipConfig = {
     // Loaded by name from the commitlint config
     "commitlint-plugin-selective-scope",
     "commitlint-plugin-function-rules",
+    // Loaded by name from babel.config.js, and the peer of the StyleX PostCSS plugin
+    "@stylexjs/babel-plugin",
+    "postcss",
   ],
 
   // System tools (not npm packages)

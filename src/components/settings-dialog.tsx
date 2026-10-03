@@ -3,6 +3,15 @@
 import { useId } from "react";
 
 import type { Ref } from "react";
+import {
+  colors,
+  fonts,
+  radii,
+  shadows,
+  space,
+  strokes,
+} from "@/styles/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
 import type { SecondaryCode } from "@/lib/tax";
 import {
@@ -15,7 +24,96 @@ import { KIWISAVER_RATES, SECONDARY_CODE_OPTIONS } from "@/lib/tax";
 
 import { Button } from "./button";
 import { Icon } from "./icons";
-import styles from "./settings-dialog.module.css";
+
+const styles = stylex.create({
+  dialog: {
+    width: "min(480px, calc(100vw - 32px))",
+    maxHeight: "calc(100dvh - 32px)",
+    padding: 0,
+    borderWidth: 0,
+    borderRadius: radii.xl,
+    backgroundColor: colors.surfaceCard,
+    color: colors.textPrimary,
+    boxShadow: shadows.card,
+  },
+  form: {
+    display: "grid",
+    gap: space.s24,
+    padding: space.s24,
+  },
+  head: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: space.s16,
+  },
+  title: {
+    fontSize: 20,
+    lineHeight: "28px",
+    fontWeight: 700,
+  },
+  close: {
+    display: "grid",
+    alignItems: "center",
+    justifyItems: "center",
+    width: 44,
+    height: 44,
+    margin: `calc(${space.s8} * -1)`,
+    padding: 0,
+    borderWidth: 0,
+    borderRadius: radii.full,
+    backgroundColor: {
+      default: "transparent",
+      ":hover": colors.surfaceSubtle,
+    },
+    color: colors.iconDefault,
+    cursor: "pointer",
+  },
+  field: {
+    display: "grid",
+    gap: space.s8,
+  },
+  label: {
+    fontFamily: fonts.heavy,
+    fontWeight: 800,
+    color: colors.textAccent,
+  },
+  control: {
+    width: "100%",
+    minHeight: 48,
+    paddingBlock: 0,
+    paddingInline: space.s12,
+    borderStyle: "solid",
+    borderWidth: { default: strokes.field, ":focus-visible": strokes.focus },
+    borderColor: {
+      default: colors.borderField,
+      ":focus-visible": colors.borderFocus,
+    },
+    borderRadius: radii.md,
+    backgroundColor: colors.surfaceCard,
+    outlineStyle: { default: null, ":focus-visible": "none" },
+    boxShadow: { default: null, ":focus-visible": shadows.focusRing },
+    fontWeight: 700,
+  },
+  // Stays red while focused, so the problem is still clear as you fix it
+  controlInvalid: {
+    borderColor: colors.textDanger,
+  },
+  error: {
+    fontSize: 14,
+    lineHeight: "20px",
+    fontWeight: 700,
+    color: colors.textDanger,
+  },
+  hint: {
+    fontSize: 14,
+    lineHeight: "20px",
+    color: colors.textSecondary,
+  },
+  done: {
+    justifySelf: "end",
+  },
+});
 
 const isSecondaryCode = (value: string): value is SecondaryCode =>
   SECONDARY_CODE_OPTIONS.some((o) => o.code === value);
@@ -58,25 +156,33 @@ export function SettingsDialog({
   const hoursErrorId = useId();
   const hoursInvalid = parseHours(hoursText) === null;
   return (
-    <dialog ref={dialogRef} className={styles.dialog} aria-labelledby={titleId}>
+    <dialog
+      ref={dialogRef}
+      {...stylex.props(styles.dialog)}
+      aria-labelledby={titleId}
+    >
       {/* noValidate: hours are checked below with a clear message, not a browser pop-up */}
-      <form method="dialog" className={styles.form} noValidate>
-        <div className={styles.head}>
-          <h2 id={titleId} className={styles.title}>
+      <form method="dialog" {...stylex.props(styles.form)} noValidate>
+        <div {...stylex.props(styles.head)}>
+          <h2 id={titleId} {...stylex.props(styles.title)}>
             Advanced settings
           </h2>
-          <button type="submit" className={styles.close} aria-label="Close">
+          <button
+            type="submit"
+            {...stylex.props(styles.close)}
+            aria-label="Close"
+          >
             <Icon name="close" />
           </button>
         </div>
 
-        <div className={styles.field}>
-          <label htmlFor={ksId} className={styles.label}>
+        <div {...stylex.props(styles.field)}>
+          <label htmlFor={ksId} {...stylex.props(styles.label)}>
             KiwiSaver contribution
           </label>
           <select
             id={ksId}
-            className={styles.control}
+            {...stylex.props(styles.control)}
             value={kiwiSaverRate}
             onChange={(e) => onKiwiSaverRateChange(Number(e.target.value))}
           >
@@ -87,19 +193,22 @@ export function SettingsDialog({
               </option>
             ))}
           </select>
-          <p className={styles.hint}>
+          <p {...stylex.props(styles.hint)}>
             3.5% is the default from 1 April 2026. 3% needs a temporary rate
             reduction.
           </p>
         </div>
 
-        <div className={styles.field}>
-          <label htmlFor={hoursId} className={styles.label}>
+        <div {...stylex.props(styles.field)}>
+          <label htmlFor={hoursId} {...stylex.props(styles.label)}>
             Hours a week
           </label>
           <input
             id={hoursId}
-            className={styles.control}
+            {...stylex.props(
+              styles.control,
+              hoursInvalid && styles.controlInvalid
+            )}
             type="number"
             inputMode="decimal"
             min={1}
@@ -113,23 +222,23 @@ export function SettingsDialog({
             }
           />
           {hoursInvalid && (
-            <p id={hoursErrorId} className={styles.error}>
+            <p id={hoursErrorId} {...stylex.props(styles.error)}>
               Enter between {HOURS_PER_WEEK.min} and {HOURS_PER_WEEK.max} hours.
               Until then it uses {HOURS_PER_WEEK.fallback}.
             </p>
           )}
-          <p id={hoursHintId} className={styles.hint}>
+          <p id={hoursHintId} {...stylex.props(styles.hint)}>
             Turns hourly pay into a year, and shows amounts per hour.
           </p>
         </div>
 
-        <div className={styles.field}>
-          <label htmlFor={codeId} className={styles.label}>
+        <div {...stylex.props(styles.field)}>
+          <label htmlFor={codeId} {...stylex.props(styles.label)}>
             Secondary tax code
           </label>
           <select
             id={codeId}
-            className={styles.control}
+            {...stylex.props(styles.control)}
             value={secondaryCode}
             onChange={(e) => {
               if (isSecondaryCode(e.target.value))
@@ -142,13 +251,13 @@ export function SettingsDialog({
               </option>
             ))}
           </select>
-          <p className={styles.hint}>
+          <p {...stylex.props(styles.hint)}>
             For a second job. Pick the code for your total income from all your
             jobs.
           </p>
         </div>
 
-        <Button type="submit" className={styles.done}>
+        <Button type="submit" xstyle={styles.done}>
           Done
         </Button>
       </form>

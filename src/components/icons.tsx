@@ -1,3 +1,7 @@
+import type { StyleXStyles } from "@stylexjs/stylex";
+
+import * as stylex from "@stylexjs/stylex";
+
 // Icons from the Figma file (Web icon/*), drawn on a 24px grid. They take the text colour.
 const PATHS = {
   stethoscope:
@@ -28,17 +32,17 @@ export type IconName = keyof typeof PATHS;
 export function Icon({
   name,
   size = 24,
-  className,
+  xstyle,
 }: {
   name: IconName;
   size?: number;
-  className?: string;
+  xstyle?: StyleXStyles;
 }) {
   const d: string | readonly string[] = PATHS[name];
   const paths = typeof d === "string" ? [d] : d;
   return (
     <svg
-      className={className}
+      {...stylex.props(xstyle)}
       width={size}
       height={size}
       viewBox="0 0 24 24"

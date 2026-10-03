@@ -23,6 +23,7 @@
     "./*.js",
     "./.*.js",
     "../tests/**/*.ts",
-    "../*.config.ts"
+    "../*.config.ts",
+    "../*.config.js"
   ]
 }

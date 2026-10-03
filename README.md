@@ -14,7 +14,8 @@ the missing screens and a desktop layout, and built it as this site.
   cites its Inland Revenue page. It works on a year's income, so it's an
   estimate: payroll rounds each pay, which can move the total by a few cents.
 - `src/components` is the UI, built from the Figma file's "🛠 2026 build" page.
-  `src/app/tokens.css` mirrors the Figma Web tokens.
+  It's styled with [StyleX](https://stylexjs.com), compiled to static CSS at
+  build time. `src/styles/tokens.stylex.ts` mirrors the Figma Web tokens.
 - On desktop, Details and Results sit side by side and update as you type. On a
   phone they're two tabs, as in the 2020 design.
 - The site is a static export (`out/`), hosted on Netlify.

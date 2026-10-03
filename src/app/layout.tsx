@@ -2,8 +2,11 @@ import { Lato } from "next/font/google";
 import localFont from "next/font/local";
 
 import type { Metadata, Viewport } from "next";
+import { sx } from "@/styles/sx";
+import { colors, fonts } from "@/styles/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
-import "./globals.css";
+import "./global.css";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -17,6 +20,20 @@ const latoHeavy = localFont({
   weight: "800",
   variable: "--font-lato-heavy",
   display: "swap",
+});
+
+const styles = stylex.create({
+  html: {
+    WebkitFontSmoothing: "antialiased",
+  },
+  body: {
+    minHeight: "100vh",
+    fontFamily: fonts.sans,
+    fontSize: 16,
+    lineHeight: "24px",
+    color: colors.textPrimary,
+    backgroundColor: colors.surfaceCard,
+  },
 });
 
 export const metadata: Metadata = {
@@ -33,8 +50,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-NZ" className={`${lato.variable} ${latoHeavy.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en-NZ"
+      {...sx(`${lato.variable} ${latoHeavy.variable}`, styles.html)}
+    >
+      <body {...stylex.props(styles.body)}>{children}</body>
     </html>
   );
 }

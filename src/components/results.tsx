@@ -1,6 +1,8 @@
 "use client";
 
-import type { CSSProperties, Ref } from "react";
+import type { Ref } from "react";
+import { colors, radii, space, strokes } from "@/styles/tokens.stylex";
+import * as stylex from "@stylexjs/stylex";
 
 import type { Breakdown, Inputs, Period } from "@/lib/tax";
 import {
@@ -20,8 +22,121 @@ import {
   TAX_YEAR,
 } from "@/lib/tax";
 
-import styles from "./results.module.css";
 import { SegmentedControl } from "./segmented-control";
+
+const styles = stylex.create({
+  hero: {
+    display: "grid",
+    gap: space.s4,
+    containerType: "inline-size",
+  },
+  overline: {
+    fontSize: 12,
+    lineHeight: "16px",
+    fontWeight: 700,
+    letterSpacing: "0.08em",
+    textTransform: "uppercase",
+    color: colors.textSecondary,
+    outlineStyle: "none",
+  },
+  amount: {
+    lineHeight: 1.125,
+    fontWeight: 900,
+    letterSpacing: "-0.02em",
+    color: colors.textPrimary,
+    fontVariantNumeric: "tabular-nums",
+    whiteSpace: "nowrap",
+  },
+  // Shrinks long amounts so they never overflow their column
+  amountSize: (chars: number) => ({
+    fontSize: `min(64px, calc(100cqi / (${chars} * 0.62)))`,
+  }),
+  per: {
+    color: colors.textSecondary,
+  },
+  bar: {
+    display: "flex",
+    gap: 2,
+    height: 16,
+    borderRadius: radii.full,
+    overflow: "hidden",
+  },
+  segment: {
+    flexBasis: 0,
+    minWidth: 2,
+  },
+  segmentShare: (share: number) => ({
+    flexGrow: share,
+  }),
+  rows: {
+    margin: 0,
+  },
+  row: {
+    display: "flex",
+    alignItems: "center",
+    gap: space.s12,
+    paddingBlock: space.s12,
+    paddingInline: 0,
+    borderBottomWidth: strokes.thin,
+    borderBottomStyle: "solid",
+    borderBottomColor: colors.borderSubtle,
+  },
+  totalRow: {
+    borderBottomWidth: 0,
+  },
+  label: {
+    display: "flex",
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: "auto",
+    flexWrap: "wrap",
+    alignItems: "center",
+    columnGap: space.s12,
+    minWidth: 0,
+  },
+  totalLabel: {
+    fontWeight: 700,
+  },
+  swatch: {
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: "auto",
+    width: 10,
+    height: 10,
+    borderRadius: radii.full,
+  },
+  note: {
+    marginLeft: "auto",
+    fontSize: 14,
+    lineHeight: "20px",
+    color: colors.textSecondary,
+  },
+  value: {
+    margin: 0,
+    fontWeight: 700,
+    fontVariantNumeric: "tabular-nums",
+    whiteSpace: "nowrap",
+  },
+  totalValue: {
+    color: colors.textAccent,
+  },
+  footnote: {
+    fontSize: 14,
+    lineHeight: "20px",
+    color: colors.textSecondary,
+  },
+});
+
+// One colour per part of the pay, shared by the bar and the row swatches
+const series = stylex.create({
+  takeHome: { backgroundColor: colors.chartTakeHome },
+  paye: { backgroundColor: colors.chartPaye },
+  acc: { backgroundColor: colors.chartAcc },
+  kiwiSaver: { backgroundColor: colors.chartKiwiSaver },
+  studentLoan: { backgroundColor: colors.chartStudentLoan },
+});
+
+type Series = keyof typeof series;
 
 const PERIOD_OPTIONS = PERIODS.map((value) => ({
   value,
@@ -33,7 +148,7 @@ interface Line {
   label: string;
   note?: string;
   value: string;
-  color?: string;
+  series?: Series;
   share?: number;
 }
 
@@ -55,7 +170,7 @@ function lines(b: Breakdown, inputs: Inputs): Line[] {
       ? `${inputs.secondaryCode} ${formatPercent(SECONDARY_CODES[inputs.secondaryCode])}`
       : undefined,
     value: formatDeduction(b.incomeTax),
-    color: "var(--chart-paye)",
+    series: "paye",
     share: b.incomeTax,
   });
   if (inputs.acc)
@@ -64,7 +179,7 @@ function lines(b: Breakdown, inputs: Inputs): Line[] {
       label: "ACC earners’ levy",
       note: formatPercent(ACC_LEVY.rate),
       value: formatDeduction(b.acc),
-      color: "var(--chart-acc)",
+      series: "acc",
       share: b.acc,
     });
   if (inputs.kiwiSaver)
@@ -73,7 +188,7 @@ function lines(b: Breakdown, inputs: Inputs): Line[] {
       label: "KiwiSaver",
       note: formatPercent(inputs.kiwiSaverRate),
       value: formatDeduction(b.kiwiSaver),
-      color: "var(--chart-kiwisaver)",
+      series: "kiwiSaver",
       share: b.kiwiSaver,
     });
   if (inputs.studentLoan)
@@ -84,7 +199,7 @@ function lines(b: Breakdown, inputs: Inputs): Line[] {
         ? formatPercent(STUDENT_LOAN.rate)
         : `${formatPercent(STUDENT_LOAN.rate)} over ${formatWholeMoney(STUDENT_LOAN.threshold)}`,
       value: formatDeduction(b.studentLoan),
-      color: "var(--chart-student-loan)",
+      series: "studentLoan",
       share: b.studentLoan,
     });
   if (inputs.taxCredits) {
@@ -105,27 +220,34 @@ function BreakdownBar({
   takeHome: number;
   parts: Line[];
 }) {
-  const segments = [
-    {
-      key: "take-home",
-      label: "Take-home pay",
-      color: "var(--chart-take-home)",
-      share: takeHome,
-    },
-    ...parts,
-  ].filter((s) => (s.share ?? 0) > 0);
+  const takeHomeSegment: Pick<Line, "key" | "label" | "series" | "share"> = {
+    key: "take-home",
+    label: "Take-home pay",
+    series: "takeHome",
+    share: takeHome,
+  };
+  const segments = [takeHomeSegment, ...parts].filter(
+    (s) => (s.share ?? 0) > 0
+  );
   const total = segments.reduce((sum, s) => sum + (s.share ?? 0), 0);
   if (total <= 0) return null;
   const summary = segments
     .map((s) => `${s.label} ${formatPercent((s.share ?? 0) / total)}`)
     .join(", ");
   return (
-    <div className={styles.bar} role="img" aria-label={`Breakdown: ${summary}`}>
+    <div
+      {...stylex.props(styles.bar)}
+      role="img"
+      aria-label={`Breakdown: ${summary}`}
+    >
       {segments.map((s) => (
         <span
           key={s.key}
-          className={styles.segment}
-          style={{ flexGrow: s.share, background: s.color }}
+          {...stylex.props(
+            styles.segment,
+            styles.segmentShare(s.share ?? 0),
+            s.series !== undefined && series[s.series]
+          )}
         />
       ))}
     </div>
@@ -153,18 +275,17 @@ export function Results({
   const rows = lines(breakdown, inputs);
   return (
     <>
-      <div className={styles.hero}>
-        <h2 ref={headingRef} tabIndex={-1} className={styles.overline}>
+      <div {...stylex.props(styles.hero)}>
+        <h2 ref={headingRef} tabIndex={-1} {...stylex.props(styles.overline)}>
           Your take-home pay
         </h2>
         <p
-          className={styles.amount}
-          style={{ "--chars": amount.length } as CSSProperties}
+          {...stylex.props(styles.amount, styles.amountSize(amount.length))}
           data-testid="take-home"
         >
           {amount}
         </p>
-        <p className={styles.per} data-testid="per-period">
+        <p {...stylex.props(styles.per)} data-testid="per-period">
           {hasIncome
             ? `${PER_PERIOD[shown]} · ${companion}`
             : "Enter your income to see your take-home pay."}
@@ -180,43 +301,43 @@ export function Results({
       {hasIncome && (
         <>
           <BreakdownBar takeHome={breakdown.takeHome} parts={rows} />
-          <dl className={styles.rows} data-testid="breakdown">
+          <dl {...stylex.props(styles.rows)} data-testid="breakdown">
             {rows.map((r) => (
-              <div key={r.key} className={styles.row} data-row={r.key}>
-                <dt className={styles.label}>
-                  {r.color ? (
+              <div key={r.key} {...stylex.props(styles.row)} data-row={r.key}>
+                <dt {...stylex.props(styles.label)}>
+                  {r.series !== undefined && (
                     <span
-                      className={styles.swatch}
-                      style={{ background: r.color }}
+                      {...stylex.props(styles.swatch, series[r.series])}
                       aria-hidden="true"
                     />
-                  ) : (
-                    <span className={styles.swatchSpace} aria-hidden="true" />
                   )}
                   {r.label}
-                  {r.note && <span className={styles.note}>{r.note}</span>}
+                  {r.note && (
+                    <span {...stylex.props(styles.note)}>{r.note}</span>
+                  )}
                 </dt>
-                <dd className={styles.value}>{r.value}</dd>
+                <dd {...stylex.props(styles.value)}>{r.value}</dd>
               </div>
             ))}
             <div
-              className={`${styles.row} ${styles.total}`}
+              {...stylex.props(styles.row, styles.totalRow)}
               data-row="take-home"
             >
-              <dt className={styles.label}>
+              <dt {...stylex.props(styles.label, styles.totalLabel)}>
                 <span
-                  className={styles.swatch}
-                  style={{ background: "var(--chart-take-home)" }}
+                  {...stylex.props(styles.swatch, series.takeHome)}
                   aria-hidden="true"
                 />
                 Take-home pay
               </dt>
-              <dd className={styles.value}>{amount}</dd>
+              <dd {...stylex.props(styles.value, styles.totalValue)}>
+                {amount}
+              </dd>
             </div>
           </dl>
         </>
       )}
-      <p className={styles.footnote}>
+      <p {...stylex.props(styles.footnote)}>
         An estimate using {TAX_YEAR} rates from Inland Revenue: income tax, the
         ACC earners’ levy (capped at {formatWholeMoney(ACC_LEVY.maxEarnings)})
         and student loan repayments. Payroll rounds each pay, so yours can

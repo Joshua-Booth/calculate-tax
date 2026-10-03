@@ -1,12 +1,13 @@
 // ESLint, adapted from creact (config/eslint.config.ts) for a Next.js app.
 // Dropped from creact: Storybook, Tailwind, Zod, FSD paths and Node server rules.
-// Added: @next/eslint-plugin-next.
+// Added: @next/eslint-plugin-next, and the StyleX rules from the personal website.
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference -- ambient module decls for untyped eslint plugins
 /// <reference path="./eslint-plugins.d.ts" />
 import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import eslintReact from "@eslint-react/eslint-plugin";
 import js from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
+import { rules as stylexRules } from "@stylexjs/eslint-plugin";
 import vitest from "@vitest/eslint-plugin";
 import barrel from "eslint-plugin-barrel-files";
 import baselineJs from "eslint-plugin-baseline-js";
@@ -60,6 +61,22 @@ export default defineConfig([
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+    },
+  },
+
+  // StyleX: the same rules as the personal website
+  {
+    plugins: { "@stylexjs": { rules: stylexRules } },
+    rules: {
+      "@stylexjs/valid-styles": "off",
+      "@stylexjs/valid-shorthands": "error",
+      "@stylexjs/no-unused": "error",
+      "@stylexjs/no-conflicting-props": "error",
+      "@stylexjs/no-legacy-contextual-styles": "error",
+      "@stylexjs/enforce-extension": "error",
+      "@stylexjs/sort-keys": "off",
+      "@stylexjs/no-lookahead-selectors": "error",
+      "@stylexjs/no-nonstandard-styles": "error",
     },
   },
 

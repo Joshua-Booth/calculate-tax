@@ -1,0 +1,14 @@
+engineStrict: true
+
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
+
+auditConfig:
+  ignoreGhsas:
+    # braces <=3.0.3 stack-exhaustion DoS (published 18 Sep 2026). No patched
+    # release exists yet. It only reaches this project through lint tooling
+    # (eslint-plugin-check-file, @next/eslint-plugin-next, stylelint via
+    # micromatch), which never ships in the static site. Remove this once a
+    # fixed braces is published and the lockfile picks it up.
+    - GHSA-vfj7-8cjw-p6xm

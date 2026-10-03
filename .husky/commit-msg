@@ -1,0 +1,2 @@
+#!/bin/sh
+pnpm exec commitlint -e --config "./config/commitlint.config.ts"

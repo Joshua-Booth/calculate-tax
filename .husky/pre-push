@@ -1,0 +1,2 @@
+#!/bin/sh
+mise run format:check ::: lint:check ::: stylelint:check ::: typecheck ::: spell ::: knip ::: depcruise && exit 0

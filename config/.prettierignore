@@ -1,0 +1,19 @@
+# Build output
+.next
+out
+coverage
+test-results
+playwright-report
+
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Generated
+next-env.d.ts
+*.tsbuildinfo
+CHANGELOG.md
+
+# Tools
+.claude
+.netlify

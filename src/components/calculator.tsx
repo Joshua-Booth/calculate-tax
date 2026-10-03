@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeferredValue, useId, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useId, useRef, useState } from "react";
 
 import { a11y } from "@/styles/shared";
 import { sx } from "@/styles/sx";
@@ -248,6 +248,11 @@ const styles = stylex.create({
     justifyContent: "center",
     gap: space.s16,
     marginTop: { default: space.s24, [breakpoints.tabletUp]: space.s32 },
+    // Edge to edge on phones, out over the page's side padding, so its top edge spans the screen
+    marginInline: {
+      default: null,
+      [breakpoints.phone]: `calc(-1 * ${space.s24})`,
+    },
     paddingTop: space.s12,
     paddingInline: 0,
     paddingBottom: {
@@ -255,6 +260,12 @@ const styles = stylex.create({
       [breakpoints.tabletUp]: `calc(${space.s16} + env(safe-area-inset-bottom))`,
     },
     backgroundColor: colors.surfaceCard,
+    transitionProperty: "box-shadow",
+    transitionDuration: { default: "120ms", [breakpoints.reducedMotion]: "0s" },
+  },
+  // While content scrolls under the stuck bar, a hairline and a soft shadow mark its edge
+  tabsStuck: {
+    boxShadow: `0 calc(-1 * ${strokes.thin}) 0 ${colors.borderSubtle}, ${shadows.docked}`,
   },
   tab: {
     width: 120,
@@ -325,8 +336,10 @@ export default function Calculator({ year }: { year: number }) {
   const [hoursText, setHoursText] = useState(String(HOURS_PER_WEEK.fallback));
   const [secondaryCode, setSecondaryCode] = useState<SecondaryCode>("S");
   const [tab, setTab] = useState<Tab>("details");
+  const [tabsStuck, setTabsStuck] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
   const detailsTabId = useId();
   const resultsTabId = useId();
   const detailsPanelId = useId();
@@ -360,6 +373,21 @@ export default function Calculator({ year }: { year: number }) {
       ? `Take-home pay ${formatMoney(breakdown.takeHome)} ${PER_PERIOD[shown]}`
       : ""
   );
+
+  // The tab bar sticks to the bottom of a screen too short for the pane. With the
+  // viewport's bottom edge pulled up 1px, a stuck bar never fits inside it, while a
+  // bar resting below the content always does. `root: document` measures against
+  // this page's own viewport, which is also right inside an iframe like Storybook's.
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    if (!tabs) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setTabsStuck((entry?.intersectionRatio ?? 1) < 1),
+      { root: document, rootMargin: "0px 0px -1px", threshold: 1 }
+    );
+    observer.observe(tabs);
+    return () => observer.disconnect();
+  }, []);
 
   const summary = [
     options.kiwiSaver ? `KiwiSaver ${formatPercent(kiwiSaverRate)}` : null,
@@ -488,7 +516,8 @@ export default function Calculator({ year }: { year: number }) {
         </section>
 
         <div
-          {...stylex.props(styles.tabs)}
+          ref={tabsRef}
+          {...stylex.props(styles.tabs, tabsStuck && styles.tabsStuck)}
           role="tablist"
           aria-label="Calculator"
         >

@@ -310,6 +310,33 @@ test.describe("mobile flow", () => {
     );
   });
 
+  test("the tab bar shows an edge only while the pane scrolls under it", async ({
+    page,
+  }) => {
+    test.skip(isDesktop(page), "Desktop shows both panes at once");
+    const width = page.viewportSize()?.width ?? 390;
+    await page.setViewportSize({ width, height: 600 });
+    await setIncome(page, "85000");
+    await setTile(page, "Student loan", true);
+    await showResults(page);
+    // Calculate scrolls to the top and focuses the heading in the next frame
+    await expect(
+      page.getByRole("heading", { name: "Your take-home pay" })
+    ).toBeFocused();
+    const tabs = page.getByRole("tablist");
+    await expect(tabs).not.toHaveCSS("box-shadow", "none");
+    // Scrolled to the end, the bar rests below the breakdown with nothing under it
+    await page.evaluate(() =>
+      window.scrollTo({ top: document.documentElement.scrollHeight })
+    );
+    await expect(tabs).toHaveCSS("box-shadow", "none");
+    await page.evaluate(() => window.scrollTo({ top: 0 }));
+    await expect(tabs).not.toHaveCSS("box-shadow", "none");
+    // On a screen tall enough for the whole pane, the bar never sticks
+    await page.setViewportSize({ width, height: 1400 });
+    await expect(tabs).toHaveCSS("box-shadow", "none");
+  });
+
   test("desktop shows Details and Results together with no tabs", async ({
     page,
   }) => {

@@ -40,12 +40,17 @@ export default definePreview({
     docs: {
       toc: true,
     },
-    // The frame sizes in the Figma file, plus a tablet in between
+    // The frame sizes in the Figma file, plus a tablet in between and a short phone
     viewport: {
       options: {
         phone: {
           name: "Phone 390",
           styles: { width: "390px", height: "844px" },
+          type: "mobile",
+        },
+        phoneShort: {
+          name: "Short phone 375 × 667",
+          styles: { width: "375px", height: "667px" },
           type: "mobile",
         },
         tablet: {

@@ -1,5 +1,8 @@
 # Calculate Tax
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5dd901ac-5ae2-435d-863e-f7c4c9337a05/deploy-status)](https://app.netlify.com/projects/calculatetax/deploys)
+[![CI](https://github.com/Joshua-Booth/calculate-tax/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Joshua-Booth/calculate-tax/actions/workflows/ci.yml)
+
 Work out your take-home pay in New Zealand: income tax, the ACC earners' levy,
 KiwiSaver, student loan repayments and the independent earner tax credit, using
 2026–27 rates from Inland Revenue.
@@ -67,5 +70,8 @@ tests that pin the worked examples.
 
 ## Licence
 
-The code is unlicensed. Lato is under the SIL Open Font License; see
-`src/app/fonts/README.md`.
+© 2020–2026 Joshua Booth. All rights reserved. The code isn't open source, so
+please ask before reusing it.
+
+The Lato font is © tyPoland Lukasz Dziedzic, under the SIL Open Font License
+1.1. See `src/app/fonts/README.md`.

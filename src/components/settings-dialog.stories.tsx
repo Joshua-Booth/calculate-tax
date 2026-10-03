@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 import type { ComponentProps } from "react";
+import { figma } from "@/storybook/figma";
 import preview from "@/storybook/preview";
 import { expect, fn } from "storybook/test";
 
@@ -26,7 +27,6 @@ function WithOpenButton(props: ComponentProps<typeof SettingsDialog>) {
   );
 }
 
-// The dialog isn't in the Figma file: it was designed in code
 const meta = preview.meta({
   title: "Components/Settings dialog",
   component: SettingsDialog,
@@ -43,6 +43,7 @@ const meta = preview.meta({
 });
 
 export const Open = meta.story({
+  parameters: figma("6241:212"),
   play: async ({ canvas, userEvent }) => {
     await userEvent.click(
       canvas.getByRole("button", { name: "Advanced settings" })
@@ -54,6 +55,7 @@ export const Open = meta.story({
 });
 
 export const InvalidHours = meta.story({
+  parameters: figma("6241:246"),
   args: { hoursText: "0" },
   play: async ({ canvas, userEvent }) => {
     await userEvent.click(

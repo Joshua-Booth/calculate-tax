@@ -1,0 +1,108 @@
+.hero {
+  display: grid;
+  gap: var(--space-4);
+  container-type: inline-size;
+}
+
+.overline {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  outline: none;
+}
+
+.amount {
+  /* Shrinks long amounts so they never overflow their column */
+  font-size: min(64px, calc(100cqi / (var(--chars) * 0.62)));
+  line-height: 1.125;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.per {
+  color: var(--text-secondary);
+}
+
+.bar {
+  display: flex;
+  gap: 2px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.segment {
+  flex-basis: 0;
+  min-width: 2px;
+}
+
+.rows {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) 0;
+  border-bottom: var(--stroke-thin) solid var(--border-subtle);
+}
+
+.label {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-12);
+  min-width: 0;
+}
+
+.swatch,
+.swatchSpace {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.swatchSpace {
+  display: none;
+}
+
+.note {
+  margin-left: auto;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-secondary);
+}
+
+.value {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.total {
+  border-bottom: 0;
+}
+
+.total .label {
+  font-weight: 700;
+}
+
+.total .value {
+  color: var(--text-accent);
+}
+
+.footnote {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,81 @@
+.control {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  float: left;
+  width: 100%;
+  margin-bottom: var(--space-8);
+  padding: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+/* Segments hug their text with 12px either side, as in the Figma component.
+   There's no gap between them: only the selected pill is visible, and the
+   padding spaces the labels. On small phones the text and padding shrink so
+   all five periods still fit (checked down to 320px by the e2e width sweep). */
+.track {
+  clear: both;
+  display: grid;
+  grid-auto-columns: max-content;
+  grid-auto-flow: column;
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--surface-tint);
+}
+
+.segment {
+  position: relative;
+  display: block;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 var(--space-12);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.segment:hover .text {
+  color: var(--text-primary);
+}
+
+.radio:checked + .text {
+  background: var(--accent-fill);
+  color: var(--text-on-accent);
+}
+
+.radio:focus-visible + .text {
+  outline: var(--stroke-focus) solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 379px) {
+  .text {
+    padding: 0 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 349px) {
+  .text {
+    padding: 0 7px;
+  }
+}

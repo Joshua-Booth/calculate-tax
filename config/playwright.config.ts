@@ -3,7 +3,6 @@ import path from "node:path";
 import { defineConfig, devices } from "@playwright/test";
 
 const rootDir = path.resolve(import.meta.dirname, "..");
-const port = 4173;
 
 // Runs against the static export in out/, the same files Netlify serves. Build first.
 export default defineConfig({
@@ -13,7 +12,7 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   use: {
-    baseURL: `http://localhost:${port}`,
+    baseURL: `http://localhost:${process.env.E2E_PORT}`,
     headless: true,
     screenshot: "only-on-failure",
     trace: "on-first-retry",
@@ -37,10 +36,13 @@ export default defineConfig({
     { name: "mobile-safari", use: { ...devices["iPhone 15"] } },
     { name: "desktop-firefox", use: { ...devices["Desktop Firefox"] } },
   ],
+  // Port 0 lets the OS pick a free port, so separate checkouts can run e2e side by side.
+  // Playwright reads it from serve's output into E2E_PORT before the workers start.
   webServer: {
-    command: `pnpm exec serve out -l ${port} -n`,
+    command: "pnpm exec serve out -l 0 -n",
     cwd: rootDir,
-    port,
-    reuseExistingServer: !process.env.CI,
+    wait: {
+      stdout: /Accepting connections at http:\/\/localhost:(?<e2e_port>\d+)/,
+    },
   },
 });

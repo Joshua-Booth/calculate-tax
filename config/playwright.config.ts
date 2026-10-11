@@ -42,7 +42,7 @@ export default defineConfig({
     command: "pnpm exec serve out -l 0 -n",
     cwd: rootDir,
     wait: {
-      stdout: /Accepting connections at http:\/\/localhost:(?<e2e_port>\d+)/,
+      stdout: /Accepting connections at \S+:(?<e2e_port>\d+)/,
     },
   },
 });

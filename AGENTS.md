@@ -7,3 +7,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+<!-- git-workflow:start -->
+
+## Commits
+
+- Commits use Conventional Commits with a lowercase imperative subject, checked by commitlint. Don't skip the hooks.
+- Before the first commit in a fresh clone, install the hooks with `pnpm install`.
+- Commits on a branch get a short body with context. PRs are squash-merged, so main gets one subject-only commit.
+
+<!-- git-workflow:end -->

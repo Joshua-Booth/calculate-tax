@@ -154,7 +154,6 @@ run = "depcruise src --config {{vars.depcruise_config}}"
 description = "Run a security audit for high-severity vulnerabilities"
 run = "pnpm audit --audit-level=high"
 
-
 [tasks.fix]
 description = "Auto-fix formatting, lint and CSS"
 alias = "x"

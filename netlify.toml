@@ -5,10 +5,6 @@
   command = "pnpm build && pnpm exec storybook build --config-dir .storybook -o out/storybook --quiet"
   publish = "out"
 
-[build.environment]
-  # Lint and test hooks are for local commits, not Netlify builds
-  HUSKY = "0"
-
 [[headers]]
   for = "/*"
   [headers.values]

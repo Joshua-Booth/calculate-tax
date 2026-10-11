@@ -18,7 +18,6 @@ vitest_config = "./config/vitest.config.ts"
 knip_config = "./config/knip.config.ts"
 depcruise_config = "./config/.dependency-cruiser.js"
 cspell_config = "./config/cspell.json"
-lintstaged_config = "./config/.lintstagedrc"
 storybook_config = "./.storybook"
 
 [tasks.dev]
@@ -49,7 +48,7 @@ alias = "f"
 run = "prettier --write \"**/*.{ts,tsx,js,mjs,css,json,yml,yaml,md}\" --config {{vars.prettier_config}} --ignore-path {{vars.prettier_ignore}} --cache"
 
 [tasks."format:files"]
-description = "Format specific files (for lint-staged)"
+description = "Format specific files (for the pre-commit hook)"
 hide = true
 run = "prettier --config {{vars.prettier_config}} --ignore-path {{vars.prettier_ignore}} --ignore-unknown --write"
 
@@ -64,7 +63,7 @@ alias = "l"
 run = "eslint . --config {{vars.eslint_config}} --max-warnings 0 --fix --cache"
 
 [tasks."lint:files"]
-description = "Lint specific files (for lint-staged)"
+description = "Lint specific files (for the pre-commit hook)"
 hide = true
 run = "eslint --config {{vars.eslint_config}} --max-warnings 0 --no-warn-ignored --fix"
 
@@ -79,7 +78,7 @@ alias = "sl"
 run = "stylelint \"{src,.storybook}/**/*.css\" --config {{vars.stylelint_config}} --fix"
 
 [tasks."stylelint:files"]
-description = "Lint specific CSS files (for lint-staged)"
+description = "Lint specific CSS files (for the pre-commit hook)"
 hide = true
 run = "stylelint --config {{vars.stylelint_config}} --fix"
 
@@ -142,7 +141,7 @@ alias = "sp"
 run = "cspell . --config {{vars.cspell_config}} --no-progress"
 
 [tasks."spell:files"]
-description = "Spell check specific files (for lint-staged)"
+description = "Spell check specific files (for the pre-commit hook)"
 hide = true
 run = "cspell --config {{vars.cspell_config}} --no-must-find-files --no-progress"
 
@@ -155,9 +154,6 @@ run = "depcruise src --config {{vars.depcruise_config}}"
 description = "Run a security audit for high-severity vulnerabilities"
 run = "pnpm audit --audit-level=high"
 
-[tasks.lintstaged]
-description = "Run lint-staged on staged files"
-run = "lint-staged --config {{vars.lintstaged_config}}"
 
 [tasks.fix]
 description = "Auto-fix formatting, lint and CSS"

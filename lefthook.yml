@@ -1,0 +1,35 @@
+# Git hooks. Each command runs on the staged files it matches, one after
+# another so no two fixers edit the same file at once, and re-stages
+# anything a fixer changed
+pre-commit:
+  commands:
+    1_lint:
+      glob: "*.{ts,tsx}"
+      run: mise run lint:files {staged_files}
+      stage_fixed: true
+    2_stylelint:
+      glob: "*.css"
+      run: mise run stylelint:files {staged_files}
+      stage_fixed: true
+    3_format:
+      glob: "*.{ts,tsx,js,mjs,css,json,yml,yaml}"
+      run: mise run format:files {staged_files}
+      stage_fixed: true
+    4_spell:
+      glob: "*.{ts,tsx,js,mjs,md}"
+      run: mise run spell:files {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: mise exec -- commitlint --edit {1} --config ./config/commitlint.config.ts
+
+pre-push:
+  commands:
+    checks:
+      run: "mise run format:check ::: lint:check ::: stylelint:check ::: typecheck ::: spell ::: knip ::: depcruise"
+
+post-merge:
+  commands:
+    install:
+      run: mise exec -- pnpm install --frozen-lockfile

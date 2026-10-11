@@ -1,3 +1,0 @@
-#!/bin/sh
-eval "$(mise env -s bash)"
-pnpm exec commitlint -e --config "./config/commitlint.config.ts"

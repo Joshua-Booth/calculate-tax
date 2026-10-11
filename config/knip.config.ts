@@ -6,8 +6,8 @@ const config: KnipConfig = {
   ignore: [".next/**", "out/**", "coverage/**"],
 
   ignoreDependencies: [
-    // Used via husky pre-commit hook
-    "lint-staged",
+    // Run by lefthook through mise exec, which knip doesn't parse
+    "@commitlint/cli",
     // CLI tools run through mise tasks
     "dependency-cruiser",
     "cspell",
@@ -57,10 +57,6 @@ const config: KnipConfig = {
 
   commitlint: {
     config: ["config/commitlint.config.ts", "config/commitlint-ci.config.ts"],
-  },
-
-  "lint-staged": {
-    config: ["config/.lintstagedrc"],
   },
 
   typescript: {

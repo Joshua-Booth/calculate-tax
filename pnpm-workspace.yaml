@@ -2,6 +2,7 @@ engineStrict: true
 
 allowBuilds:
   esbuild: false
+  lefthook: false
   sharp: false
   unrs-resolver: false
 

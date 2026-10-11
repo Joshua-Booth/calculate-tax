@@ -5,6 +5,11 @@ allowBuilds:
   sharp: false
   unrs-resolver: false
 
+overrides:
+  # serve 14.2.6 pins compression 1.8.1, which has a memory-leak DoS
+  # (GHSA-vc2v-76pw-4v95). Remove this once a serve release allows 1.8.2.
+  compression: ^1.8.2
+
 auditConfig:
   ignoreGhsas:
     # braces <=3.0.3 stack-exhaustion DoS (published 18 Sep 2026). No patched

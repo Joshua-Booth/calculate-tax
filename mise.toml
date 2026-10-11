@@ -34,10 +34,10 @@ sources = ["src/**/*", "public/**/*", "package.json", "next.config.ts", "tsconfi
 outputs = ["out/**/*"]
 
 [tasks.preview]
-description = "Serve the built site on port 4173"
+description = "Serve the built site on port 3000, or a free port if that is taken"
 alias = "p"
 depends = ["build"]
-run = "serve out -l 4173"
+run = "serve out"
 
 [tasks.clean]
 description = "Remove build artifacts and caches"

@@ -40,7 +40,7 @@ mise run check      # every CI check
 | Task                      | What it does                                                 |
 | ------------------------- | ------------------------------------------------------------ |
 | `mise run build`          | Builds the static site into `out/`                           |
-| `mise run preview`        | Serves the build on port 4173                                |
+| `mise run preview`        | Serves the build on port 3000, or a free port if it's taken  |
 | `mise run test`           | Unit tests, including every combination of options and codes |
 | `mise run coverage`       | Unit tests with coverage; `src/lib` must stay at 100%        |
 | `mise run test:e2e`       | Browser tests and a width sweep from 320px to 1920px         |

@@ -1,0 +1,606 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13T08:05:59.408Z",
+  "title": "Design System: Calculate Tax",
+  "extensions": {
+    "colorMeta": {
+      "bg-page": {
+        "role": "neutral",
+        "displayName": "Morning Haze",
+        "canonical": "oklch(96.7% 0.006 264.5)",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 264.5)",
+          "oklch(26.4% 0.006 264.5)",
+          "oklch(37.9% 0.006 264.5)",
+          "oklch(49.3% 0.006 264.5)",
+          "oklch(60.7% 0.006 264.5)",
+          "oklch(72.1% 0.006 264.5)",
+          "oklch(83.6% 0.006 264.5)",
+          "oklch(95.0% 0.006 264.5)"
+        ]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "Card White",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.4% 0.000 0)",
+          "oklch(37.9% 0.000 0)",
+          "oklch(49.3% 0.000 0)",
+          "oklch(60.7% 0.000 0)",
+          "oklch(72.1% 0.000 0)",
+          "oklch(83.6% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
+        ]
+      },
+      "surface-subtle": {
+        "role": "neutral",
+        "displayName": "Lavender Wash",
+        "canonical": "oklch(97.6% 0.008 293.9)",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 293.9)",
+          "oklch(26.4% 0.008 293.9)",
+          "oklch(37.9% 0.008 293.9)",
+          "oklch(49.3% 0.008 293.9)",
+          "oklch(60.7% 0.008 293.9)",
+          "oklch(72.1% 0.008 293.9)",
+          "oklch(83.6% 0.008 293.9)",
+          "oklch(95.0% 0.008 293.9)"
+        ]
+      },
+      "surface-tint": {
+        "role": "neutral",
+        "displayName": "Lilac Tint",
+        "canonical": "oklch(95.0% 0.015 290.3)",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 290.3)",
+          "oklch(26.4% 0.015 290.3)",
+          "oklch(37.9% 0.015 290.3)",
+          "oklch(49.3% 0.015 290.3)",
+          "oklch(60.7% 0.015 290.3)",
+          "oklch(72.1% 0.015 290.3)",
+          "oklch(83.6% 0.015 290.3)",
+          "oklch(95.0% 0.015 290.3)"
+        ]
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(29.1% 0.008 196.7)",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 196.7)",
+          "oklch(26.4% 0.008 196.7)",
+          "oklch(37.9% 0.008 196.7)",
+          "oklch(49.3% 0.008 196.7)",
+          "oklch(60.7% 0.008 196.7)",
+          "oklch(72.1% 0.008 196.7)",
+          "oklch(83.6% 0.008 196.7)",
+          "oklch(95.0% 0.008 196.7)"
+        ]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Slate",
+        "canonical": "oklch(53.2% 0.017 285.8)",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 285.8)",
+          "oklch(26.4% 0.017 285.8)",
+          "oklch(37.9% 0.017 285.8)",
+          "oklch(49.3% 0.017 285.8)",
+          "oklch(60.7% 0.017 285.8)",
+          "oklch(72.1% 0.017 285.8)",
+          "oklch(83.6% 0.017 285.8)",
+          "oklch(95.0% 0.017 285.8)"
+        ]
+      },
+      "text-accent": {
+        "role": "primary",
+        "displayName": "Dusk Lilac",
+        "canonical": "oklch(54.6% 0.129 285.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.129 285.0)",
+          "oklch(26.4% 0.129 285.0)",
+          "oklch(37.9% 0.129 285.0)",
+          "oklch(49.3% 0.129 285.0)",
+          "oklch(60.7% 0.129 285.0)",
+          "oklch(72.1% 0.129 285.0)",
+          "oklch(83.6% 0.129 285.0)",
+          "oklch(95.0% 0.129 285.0)"
+        ]
+      },
+      "text-on-accent": {
+        "role": "neutral",
+        "displayName": "Card White",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.4% 0.000 0)",
+          "oklch(37.9% 0.000 0)",
+          "oklch(49.3% 0.000 0)",
+          "oklch(60.7% 0.000 0)",
+          "oklch(72.1% 0.000 0)",
+          "oklch(83.6% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
+        ]
+      },
+      "text-danger": {
+        "role": "error",
+        "displayName": "Error Red",
+        "canonical": "oklch(55.4% 0.190 26.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.190 26.0)",
+          "oklch(26.4% 0.190 26.0)",
+          "oklch(37.9% 0.190 26.0)",
+          "oklch(49.3% 0.190 26.0)",
+          "oklch(60.7% 0.190 26.0)",
+          "oklch(72.1% 0.190 26.0)",
+          "oklch(83.6% 0.190 26.0)",
+          "oklch(95.0% 0.190 26.0)"
+        ]
+      },
+      "accent-fill": {
+        "role": "primary",
+        "displayName": "Dusk Lilac",
+        "canonical": "oklch(54.6% 0.129 285.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.129 285.0)",
+          "oklch(26.4% 0.129 285.0)",
+          "oklch(37.9% 0.129 285.0)",
+          "oklch(49.3% 0.129 285.0)",
+          "oklch(60.7% 0.129 285.0)",
+          "oklch(72.1% 0.129 285.0)",
+          "oklch(83.6% 0.129 285.0)",
+          "oklch(95.0% 0.129 285.0)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Deep Dusk Lilac",
+        "canonical": "oklch(50.0% 0.127 284.7)",
+        "tonalRamp": [
+          "oklch(15.0% 0.127 284.7)",
+          "oklch(26.4% 0.127 284.7)",
+          "oklch(37.9% 0.127 284.7)",
+          "oklch(49.3% 0.127 284.7)",
+          "oklch(60.7% 0.127 284.7)",
+          "oklch(72.1% 0.127 284.7)",
+          "oklch(83.6% 0.127 284.7)",
+          "oklch(95.0% 0.127 284.7)"
+        ]
+      },
+      "accent-brand": {
+        "role": "secondary",
+        "displayName": "Soft Lavender",
+        "canonical": "oklch(69.8% 0.083 288.1)",
+        "tonalRamp": [
+          "oklch(15.0% 0.083 288.1)",
+          "oklch(26.4% 0.083 288.1)",
+          "oklch(37.9% 0.083 288.1)",
+          "oklch(49.3% 0.083 288.1)",
+          "oklch(60.7% 0.083 288.1)",
+          "oklch(72.1% 0.083 288.1)",
+          "oklch(83.6% 0.083 288.1)",
+          "oklch(95.0% 0.083 288.1)"
+        ]
+      },
+      "border-field": {
+        "role": "neutral",
+        "displayName": "Field Grey",
+        "canonical": "oklch(65.7% 0.031 294.3)",
+        "tonalRamp": [
+          "oklch(15.0% 0.031 294.3)",
+          "oklch(26.4% 0.031 294.3)",
+          "oklch(37.9% 0.031 294.3)",
+          "oklch(49.3% 0.031 294.3)",
+          "oklch(60.7% 0.031 294.3)",
+          "oklch(72.1% 0.031 294.3)",
+          "oklch(83.6% 0.031 294.3)",
+          "oklch(95.0% 0.031 294.3)"
+        ]
+      },
+      "border-subtle": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(92.3% 0.014 295.3)",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 295.3)",
+          "oklch(26.4% 0.014 295.3)",
+          "oklch(37.9% 0.014 295.3)",
+          "oklch(49.3% 0.014 295.3)",
+          "oklch(60.7% 0.014 295.3)",
+          "oklch(72.1% 0.014 295.3)",
+          "oklch(83.6% 0.014 295.3)",
+          "oklch(95.0% 0.014 295.3)"
+        ]
+      },
+      "border-focus": {
+        "role": "primary",
+        "displayName": "Dusk Lilac",
+        "canonical": "oklch(54.6% 0.129 285.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.129 285.0)",
+          "oklch(26.4% 0.129 285.0)",
+          "oklch(37.9% 0.129 285.0)",
+          "oklch(49.3% 0.129 285.0)",
+          "oklch(60.7% 0.129 285.0)",
+          "oklch(72.1% 0.129 285.0)",
+          "oklch(83.6% 0.129 285.0)",
+          "oklch(95.0% 0.129 285.0)"
+        ]
+      },
+      "icon-default": {
+        "role": "neutral",
+        "displayName": "Slate",
+        "canonical": "oklch(53.2% 0.017 285.8)",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 285.8)",
+          "oklch(26.4% 0.017 285.8)",
+          "oklch(37.9% 0.017 285.8)",
+          "oklch(49.3% 0.017 285.8)",
+          "oklch(60.7% 0.017 285.8)",
+          "oklch(72.1% 0.017 285.8)",
+          "oklch(83.6% 0.017 285.8)",
+          "oklch(95.0% 0.017 285.8)"
+        ]
+      },
+      "icon-accent": {
+        "role": "primary",
+        "displayName": "Dusk Lilac",
+        "canonical": "oklch(54.6% 0.129 285.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.129 285.0)",
+          "oklch(26.4% 0.129 285.0)",
+          "oklch(37.9% 0.129 285.0)",
+          "oklch(49.3% 0.129 285.0)",
+          "oklch(60.7% 0.129 285.0)",
+          "oklch(72.1% 0.129 285.0)",
+          "oklch(83.6% 0.129 285.0)",
+          "oklch(95.0% 0.129 285.0)"
+        ]
+      },
+      "icon-on-accent": {
+        "role": "neutral",
+        "displayName": "Card White",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.4% 0.000 0)",
+          "oklch(37.9% 0.000 0)",
+          "oklch(49.3% 0.000 0)",
+          "oklch(60.7% 0.000 0)",
+          "oklch(72.1% 0.000 0)",
+          "oklch(83.6% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
+        ]
+      },
+      "chart-take-home": {
+        "role": "primary",
+        "displayName": "Dusk Lilac",
+        "canonical": "oklch(54.6% 0.129 285.0)",
+        "tonalRamp": [
+          "oklch(15.0% 0.129 285.0)",
+          "oklch(26.4% 0.129 285.0)",
+          "oklch(37.9% 0.129 285.0)",
+          "oklch(49.3% 0.129 285.0)",
+          "oklch(60.7% 0.129 285.0)",
+          "oklch(72.1% 0.129 285.0)",
+          "oklch(83.6% 0.129 285.0)",
+          "oklch(95.0% 0.129 285.0)"
+        ]
+      },
+      "chart-paye": {
+        "role": "secondary",
+        "displayName": "Soft Lavender",
+        "canonical": "oklch(69.8% 0.083 288.1)",
+        "tonalRamp": [
+          "oklch(15.0% 0.083 288.1)",
+          "oklch(26.4% 0.083 288.1)",
+          "oklch(37.9% 0.083 288.1)",
+          "oklch(49.3% 0.083 288.1)",
+          "oklch(60.7% 0.083 288.1)",
+          "oklch(72.1% 0.083 288.1)",
+          "oklch(83.6% 0.083 288.1)",
+          "oklch(95.0% 0.083 288.1)"
+        ]
+      },
+      "chart-acc": {
+        "role": "tertiary",
+        "displayName": "Pale Lavender",
+        "canonical": "oklch(83.9% 0.051 290.2)",
+        "tonalRamp": [
+          "oklch(15.0% 0.051 290.2)",
+          "oklch(26.4% 0.051 290.2)",
+          "oklch(37.9% 0.051 290.2)",
+          "oklch(49.3% 0.051 290.2)",
+          "oklch(60.7% 0.051 290.2)",
+          "oklch(72.1% 0.051 290.2)",
+          "oklch(83.6% 0.051 290.2)",
+          "oklch(95.0% 0.051 290.2)"
+        ]
+      },
+      "chart-kiwisaver": {
+        "role": "tertiary",
+        "displayName": "Harbour Teal",
+        "canonical": "oklch(71.3% 0.100 200.2)",
+        "tonalRamp": [
+          "oklch(15.0% 0.100 200.2)",
+          "oklch(26.4% 0.100 200.2)",
+          "oklch(37.9% 0.100 200.2)",
+          "oklch(49.3% 0.100 200.2)",
+          "oklch(60.7% 0.100 200.2)",
+          "oklch(72.1% 0.100 200.2)",
+          "oklch(83.6% 0.100 200.2)",
+          "oklch(95.0% 0.100 200.2)"
+        ]
+      },
+      "chart-student-loan": {
+        "role": "tertiary",
+        "displayName": "Cornflower",
+        "canonical": "oklch(65.2% 0.103 250.1)",
+        "tonalRamp": [
+          "oklch(15.0% 0.103 250.1)",
+          "oklch(26.4% 0.103 250.1)",
+          "oklch(37.9% 0.103 250.1)",
+          "oklch(49.3% 0.103 250.1)",
+          "oklch(60.7% 0.103 250.1)",
+          "oklch(72.1% 0.103 250.1)",
+          "oklch(83.6% 0.103 250.1)",
+          "oklch(95.0% 0.103 250.1)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The page title, one per page. Lato Heavy; 36px/44px under 1200px."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "The take-home amount alone. Scales down with its container so it never wraps."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section, dialog and popover headings."
+      },
+      "field-label": {
+        "displayName": "Field label",
+        "purpose": "Labels above fields, in Dusk Lilac. Lato Heavy."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text and the per-period line. 18px/26px for the desktop subtitle."
+      },
+      "body-strong": {
+        "displayName": "Body strong",
+        "purpose": "Button text, typed values and breakdown values."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Legends, segments, tiles, tabs and the chip."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Footnote, hints, the settings summary and the footer, in Slate."
+      },
+      "overline": {
+        "displayName": "Overline",
+        "purpose": "\"Your take-home pay\". The only uppercase text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 24px 64px rgba(133, 140, 166, 0.28)",
+        "purpose": "The card from 640px up, the settings dialog and the tax code popover."
+      },
+      {
+        "name": "raised",
+        "value": "0 2px 8px rgba(0, 0, 0, 0.08)",
+        "purpose": "Option tiles at rest."
+      },
+      {
+        "name": "accent",
+        "value": "0 8px 24px rgba(106, 99, 184, 0.32)",
+        "purpose": "Lilac glow on the primary button and checked tiles."
+      },
+      {
+        "name": "docked",
+        "value": "0 -8px 16px -8px rgba(133, 140, 166, 0.32)",
+        "purpose": "The phone tab bar while stuck, with a 1px Hairline above."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 4px rgba(106, 99, 184, 0.22)",
+        "purpose": "Halo around a focused field, with a 2px Dusk Lilac border."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-change",
+        "value": "120ms ease",
+        "purpose": "Background, colour and shadow on option tiles; the tab bar's docked shadow. 0s under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "max-width: 639px"
+      },
+      {
+        "name": "tablet",
+        "value": "640px to 1199px"
+      },
+      {
+        "name": "tabletUp",
+        "value": "min-width: 640px"
+      },
+      {
+        "name": "desktop",
+        "value": "min-width: 1200px"
+      },
+      {
+        "name": "desktopNarrow",
+        "value": "1200px to 1359px"
+      },
+      {
+        "name": "desktopWide",
+        "value": "min-width: 1360px"
+      },
+      {
+        "name": "fiveTiles",
+        "value": "min-width: 540px"
+      },
+      {
+        "name": "under380",
+        "value": "max-width: 379px"
+      },
+      {
+        "name": "under360",
+        "value": "max-width: 359px"
+      },
+      {
+        "name": "under350",
+        "value": "max-width: 349px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action per view: Calculate, below 1200px.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M11 17V19H13V17H11ZM7 17V19H9V17H7ZM15 13V19H17V13H15ZM11 13V15H13V13H11ZM7 13V15H9V13H7ZM15 9V11H17V9H15ZM11 9V11H13V9H11ZM7 9V11H9V9H7ZM7 5V7H17V5H7ZM4 4C4 2.9 4.9 2 6 2H18C19.1046 2 20 2.89543 20 4V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V4Z\"/></svg>Calculate</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; border: 0; border-radius: 12px; background: #6a63b8; color: #fff; box-shadow: 0 8px 24px rgba(106, 99, 184, 0.32); font-family: Lato, system-ui, sans-serif; font-size: 16px; line-height: 24px; font-weight: 700; white-space: nowrap; cursor: pointer; } .ds-btn-primary:hover { background: #5d56a8; } .ds-btn-primary:focus-visible { outline: 2px solid #6a63b8; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined lilac button for supporting actions: Advanced settings, Done.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15ZM5.94 8.5L4.22 5.64L5.64 4.22L8.5 5.94C9.02 5.64 9.6 5.4 10.2 5.24L11 2H13L13.8 5.24C14.4 5.4 14.98 5.64 15.5 5.94L18.36 4.22L19.78 5.64L18.06 8.5C18.36 9.02 18.6 9.6 18.76 10.2L22 11V13L18.76 13.8C18.6 14.4 18.36 14.98 18.06 15.5L19.78 18.36L18.36 19.78L15.5 18.06C14.98 18.36 14.4 18.6 13.8 18.76L13 22H11L10.2 18.76C9.6 18.6 9.02 18.36 8.5 18.06L5.64 19.78L4.22 18.36L5.94 15.5C5.64 14.98 5.4 14.4 5.24 13.8L2 13V11L5.24 10.2C5.4 9.6 5.64 9.02 5.94 8.5Z\"/></svg>Advanced settings</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 24px; border: 1.5px solid #6a63b8; border-radius: 12px; background: #fff; color: #6a63b8; font-family: Lato, system-ui, sans-serif; font-size: 16px; line-height: 24px; font-weight: 700; white-space: nowrap; cursor: pointer; } .ds-btn-secondary:hover { background: #f7f6fc; } .ds-btn-secondary:focus-visible { outline: 2px solid #6a63b8; outline-offset: 2px; }"
+    },
+    {
+      "name": "Income Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Labelled text field with a dollar prefix. Thickens to a 2px lilac border with a halo on focus.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Income</span><span class=\"ds-field-box\"><span class=\"ds-field-prefix\">$</span><input class=\"ds-field-input\" inputmode=\"decimal\" placeholder=\"Enter amount\" value=\"85,000\"></span></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; width: 320px; font-family: Lato, system-ui, sans-serif; } .ds-field-label { font-size: 16px; line-height: 24px; font-weight: 800; color: #6a63b8; } .ds-field-box { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 16px; background: #fff; border: 1.5px solid #928ea3; border-radius: 12px; } .ds-field-box:focus-within { padding: 0 15.5px; border: 2px solid #6a63b8; box-shadow: 0 0 0 4px rgba(106, 99, 184, 0.22); } .ds-field-prefix { font-weight: 700; color: #6b6b76; } .ds-field-input { flex: 1 1 auto; min-width: 0; height: 44px; padding: 0; border: 0; background: transparent; outline: none; font: inherit; font-size: 16px; font-weight: 700; color: #272d2d; } .ds-field-input::placeholder { color: #6b6b76; font-weight: 400; }"
+    },
+    {
+      "name": "Option Tiles",
+      "kind": "custom",
+      "refersTo": "option-tile",
+      "description": "Square checkbox tiles: white and raised when off, Dusk Lilac with a lilac glow when on.",
+      "html": "<div class=\"ds-tiles\"><label class=\"ds-tile ds-tile-on\"><input type=\"checkbox\" class=\"ds-hidden\" checked><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M18.5 15C19.3284 15 20 14.3284 20 13.5C20 12.6716 19.3284 12 18.5 12C17.6716 12 17 12.6716 17 13.5C17 14.3284 17.6716 15 18.5 15ZM2 6C2 4.9 2.9 4 4 4H19C19.5523 4 20 4.44772 20 5V6H4V7H21C21.5523 7 22 7.44772 22 8V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18L2 6Z\"/></svg><span class=\"ds-tile-label\">KiwiSaver</span></label><label class=\"ds-tile\"><input type=\"checkbox\" class=\"ds-hidden\"><svg width=\"32\" height=\"32\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M10 5.5V6.5H14V5.5H10ZM5 6.5V20.5H4C2.89543 20.5 2 19.6046 2 18.5V8.5C2 7.4 2.9 6.5 4 6.5H5ZM19 6.5H20C21.1046 6.5 22 7.39543 22 8.5V18.5C22 19.6046 21.1046 20.5 20 20.5H19V6.5ZM16 6.5H18V20.5H6V6.5H8V5.5C8 4.39543 8.89543 3.5 10 3.5H14C15.1046 3.5 16 4.39543 16 5.5V6.5Z\"/></svg><span class=\"ds-tile-label\">Secondary income</span></label></div>",
+      "css": ".ds-tiles { display: grid; grid-template-columns: repeat(2, 112px); grid-auto-rows: 1fr; gap: 12px; font-family: Lato, system-ui, sans-serif; } .ds-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; } .ds-tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; aspect-ratio: 1; padding: 12px 8px; border: 1px solid #e6e4ee; border-radius: 16px; background: #fff; color: #6b6b76; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); cursor: pointer; user-select: none; transition: background-color 120ms, color 120ms, box-shadow 120ms; } .ds-tile:hover { border-color: #9b96cf; color: #272d2d; } .ds-tile:has(:focus-visible) { outline: 2px solid #6a63b8; outline-offset: 3px; } .ds-tile-on, .ds-tile-on:hover { border-color: #6a63b8; background: #6a63b8; color: #fff; box-shadow: 0 8px 24px rgba(106, 99, 184, 0.32); } .ds-tile-label { max-width: 100%; font-size: 14px; line-height: 20px; font-weight: 700; text-align: center; } @media (prefers-reduced-motion: reduce) { .ds-tile { transition: none; } }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "custom",
+      "refersTo": "segmented-track",
+      "description": "Pill track of radio segments; only the selected one shows, as a Dusk Lilac pill.",
+      "html": "<fieldset class=\"ds-seg\"><legend class=\"ds-seg-legend\">Income is per</legend><div class=\"ds-seg-track\"><label class=\"ds-seg-item\"><input type=\"radio\" name=\"ds-period\" class=\"ds-hidden\">Hour</label><label class=\"ds-seg-item\"><input type=\"radio\" name=\"ds-period\" class=\"ds-hidden\">Week</label><label class=\"ds-seg-item\"><input type=\"radio\" name=\"ds-period\" class=\"ds-hidden\">Fortnight</label><label class=\"ds-seg-item\"><input type=\"radio\" name=\"ds-period\" class=\"ds-hidden\">Month</label><label class=\"ds-seg-item ds-seg-on\"><input type=\"radio\" name=\"ds-period\" class=\"ds-hidden\" checked>Year</label></div></fieldset>",
+      "css": ".ds-seg { margin: 0; padding: 0; border: 0; min-width: 0; font-family: Lato, system-ui, sans-serif; } .ds-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; } .ds-seg-legend { float: left; width: 100%; margin-bottom: 8px; padding: 0; font-size: 14px; line-height: 20px; font-weight: 700; color: #6a63b8; } .ds-seg-track { clear: both; display: grid; grid-auto-flow: column; grid-auto-columns: max-content; width: fit-content; padding: 4px; border-radius: 9999px; background: #eeedf8; } .ds-seg-item { position: relative; display: flex; align-items: center; justify-content: center; min-height: 36px; padding: 0 12px; border-radius: 9999px; font-size: 14px; line-height: 20px; font-weight: 700; color: #6b6b76; white-space: nowrap; cursor: pointer; } .ds-seg-item:hover { color: #272d2d; } .ds-seg-item:has(:focus-visible) { outline: 2px solid #6a63b8; outline-offset: 2px; } .ds-seg-on, .ds-seg-on:hover { background: #6a63b8; color: #fff; }"
+    },
+    {
+      "name": "Tax-year Chip",
+      "kind": "chip",
+      "refersTo": "chip-tax-year",
+      "description": "Static label in the header. White with a hairline, because lilac text on the tint fails AA.",
+      "html": "<span class=\"ds-chip\">2026–27 tax year</span>",
+      "css": ".ds-chip { display: inline-block; padding: 4px 12px; border: 1px solid #e6e4ee; border-radius: 9999px; background: #fff; font-family: Lato, system-ui, sans-serif; font-size: 14px; line-height: 20px; font-weight: 700; color: #6a63b8; white-space: nowrap; }"
+    },
+    {
+      "name": "Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Details and Results tabs below 1200px, with a 3px underline that turns Dusk Lilac when selected.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\" type=\"button\">Details</button><button class=\"ds-tab ds-tab-on\" role=\"tab\" aria-selected=\"true\" type=\"button\">Results</button></div>",
+      "css": ".ds-tabs { display: flex; justify-content: center; gap: 16px; padding: 12px 0; background: #fff; font-family: Lato, system-ui, sans-serif; } .ds-tab { width: 120px; min-height: 44px; padding: 0 0 8px; border: 0; border-bottom: 3px solid #e6e4ee; background: transparent; font: inherit; font-size: 14px; line-height: 20px; font-weight: 700; color: #6b6b76; cursor: pointer; } .ds-tab:hover { color: #272d2d; } .ds-tab:focus-visible { outline: 2px solid #6a63b8; outline-offset: 2px; } .ds-tab-on { border-bottom-color: #6a63b8; color: #272d2d; }"
+    },
+    {
+      "name": "Breakdown",
+      "kind": "custom",
+      "refersTo": "results-pane",
+      "description": "The payslip: take-home figure, a proportional series bar, and one row per deduction in tabular figures.",
+      "html": "<section class=\"ds-bd\"><div class=\"ds-bd-hero\"><p class=\"ds-bd-over\">Your take-home pay</p><p class=\"ds-bd-fig\">$55,305.36</p><p class=\"ds-bd-per\">a year · about $1,064 a week</p></div><div class=\"ds-bd-bar\" role=\"img\" aria-label=\"Breakdown: Take-home pay 65%, PAYE income tax 21%, ACC earners’ levy 2%, KiwiSaver 3%, Student loan 9%\"><span style=\"flex-grow:65;background:#6a63b8\"></span><span style=\"flex-grow:21;background:#9b96cf\"></span><span style=\"flex-grow:2;background:#c9c5ea\"></span><span style=\"flex-grow:3;background:#45b5bb\"></span><span style=\"flex-grow:9;background:#5d94cc\"></span></div><dl class=\"ds-bd-rows\"><div class=\"ds-bd-row\"><dt class=\"ds-bd-label\">Gross income</dt><dd class=\"ds-bd-val\">$85,000.00</dd></div><div class=\"ds-bd-row\"><dt class=\"ds-bd-label\"><i class=\"ds-bd-dot\" style=\"background:#9b96cf\"></i>PAYE income tax</dt><dd class=\"ds-bd-val\">−$17,927.50</dd></div><div class=\"ds-bd-row\"><dt class=\"ds-bd-label\"><i class=\"ds-bd-dot\" style=\"background:#5d94cc\"></i>Student loan<span class=\"ds-bd-note\">12% over $24,128</span></dt><dd class=\"ds-bd-val\">−$7,304.64</dd></div><div class=\"ds-bd-row ds-bd-total\"><dt class=\"ds-bd-label\"><i class=\"ds-bd-dot\" style=\"background:#6a63b8\"></i>Take-home pay</dt><dd class=\"ds-bd-val\">$55,305.36</dd></div></dl></section>",
+      "css": ".ds-bd { display: grid; gap: 24px; width: 420px; padding: 48px; background: #f7f6fc; color: #272d2d; font-family: Lato, system-ui, sans-serif; font-size: 16px; line-height: 24px; } .ds-bd p { margin: 0; } .ds-bd-over { font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b6b76; } .ds-bd-hero { display: grid; gap: 4px; } .ds-bd-fig { font-size: 56px; line-height: 1.125; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; } .ds-bd-per { color: #6b6b76; } .ds-bd-bar { display: flex; gap: 2px; height: 16px; border-radius: 9999px; overflow: hidden; } .ds-bd-bar span { flex-basis: 0; min-width: 2px; } .ds-bd-rows { margin: 0; } .ds-bd-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e6e4ee; } .ds-bd-total { border-bottom: 0; } .ds-bd-label { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; column-gap: 12px; min-width: 0; } .ds-bd-total .ds-bd-label { font-weight: 700; } .ds-bd-dot { width: 10px; height: 10px; border-radius: 9999px; flex: none; } .ds-bd-note { margin-left: auto; font-size: 14px; line-height: 20px; color: #6b6b76; } .ds-bd-val { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; } .ds-bd-total .ds-bd-val { color: #6a63b8; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Friendly Payslip",
+    "overview": "Tax made calm and readable. One soft white card holds the whole job: the details you give on one side, and on the other a big plain take-home figure with every deduction listed under it, line by line, like a payslip you can actually read. The card floats on a pale lilac-to-sky haze, the background art from the 2020 design. That haze is the only atmosphere in the system. Inside the card everything is white, lilac and near-black.\n\nIt should feel calm, friendly and a little playful. Corners are generous, the palette is soft, and Lato carries all the type: Heavy for the title and field labels, Black for the one number that matters. Controls are tactile. Option tiles sit slightly raised and fill with Dusk Lilac and a lilac glow when they're on, so what you've ticked shows at a glance. Density is low: each screen asks for a handful of things and gives one answer.\n\nThe design began in March 2020 as a single mobile screen for Instagram, and the phone layout still follows it, with Details and Results as two tabs and the tiles three over two. Tablet and desktop extend that screen rather than replace it.",
+    "keyCharacteristics": [
+      "One white card on a lilac-to-sky haze. On desktop it splits into Details and a lavender-washed Results pane.",
+      "One accent, Dusk Lilac, for every action, selection, label and the take-home total.",
+      "Lato throughout, from Regular to Black, with Heavy for the title and field labels.",
+      "Soft, raised, pressable controls that glow lilac when they're on.",
+      "Money in tabular figures, to the cent, right-aligned in the breakdown."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Dusk Lilac is the only colour that means \"act\" or \"chosen\". There is no second accent, and the series hues never appear on controls.",
+        "section": "colors"
+      },
+      {
+        "name": "The Series Rule",
+        "body": "Each deduction owns one series colour, used for its segment in the bar and its swatch in the row, and nowhere else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lavender Isn't Text Rule",
+        "body": "Soft Lavender and Pale Lavender are too light for text on white. Text in the lilac family is Dusk Lilac, and never on Lilac Tint, where it drops to 4.43:1. That's why the tax-year chip is white with a hairline instead of tinted.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight Ladder Rule",
+        "body": "Hierarchy comes from weight, not new faces: 400 to read, 700 for anything you act on or read as a value, 800 for the title and field labels, and 900 for the take-home figure alone.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Money Rule",
+        "body": "Every amount of money uses tabular figures and never wraps. In the breakdown, amounts sit right-aligned and deductions carry a true minus sign (−$17,927.50).",
+        "section": "typography"
+      },
+      {
+        "name": "The Every Width Rule",
+        "body": "Every width from 320px to 1920px renders without overflow or clipped text. On small phones, padding and type shrink a step before any content is dropped.",
+        "section": "layout"
+      },
+      {
+        "name": "The Cool Shadow Rule",
+        "body": "Shadows on surfaces are cool grey-lilac, rgba(133, 140, 166), never flat black. The only exception is the tile's faint 8% raise. The accent glow is the only coloured shadow, and it is always Dusk Lilac.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Nested Radius Rule",
+        "body": "Bigger surfaces get bigger radii, and nothing inside the card is rounder than the card except pills.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do take every colour, space, radius, stroke and shadow from src/styles/tokens.stylex.ts. global.css repeats only the focus outline and backdrop colours, and must stay in sync with it.",
+      "Do keep Dusk Lilac as the single accent for actions, selections and the take-home total.",
+      "Do set every money amount in tabular figures that never wrap, right-aligned in lists.",
+      "Do make new controls soft and pressable: 12px to 16px radius, white at rest, Dusk Lilac and the accent glow when on, and a visible 2px Dusk Lilac focus outline.",
+      "Do give any new deduction its own series colour, used in both the bar and its row's swatch.",
+      "Do check new UI at every width from 320px to 1920px with mise run test:e2e, and shrink type or padding a step on small phones before dropping content.",
+      "Do keep the phone layout true to the 2020 screen: Details and Results as tabs, tiles three over two.",
+      "Do keep transitions at 120ms on colour, background and shadow, and drop them to 0s under prefers-reduced-motion."
+    ],
+    "donts": [
+      "Don't add a second accent colour, or use the series hues on controls.",
+      "Don't set text in Soft Lavender or Pale Lavender, or Dusk Lilac text on Lilac Tint (4.43:1, under AA).",
+      "Don't use pure black for text. Ink (#272d2d) is the darkest colour.",
+      "Don't add a second typeface. Hierarchy comes from Lato's weights.",
+      "Don't put flat black shadows on surfaces. Use the Card, Raised or Docked shadows, or the accent glow.",
+      "Don't set anything in uppercase except the one overline.",
+      "Don't hard-code a colour or a space that a token already covers."
+    ]
+  }
+}

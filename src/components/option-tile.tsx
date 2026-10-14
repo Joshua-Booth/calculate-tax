@@ -5,6 +5,8 @@ import { sx } from "@/styles/sx";
 import {
   breakpoints,
   colors,
+  fontSizes,
+  lineHeights,
   radii,
   shadows,
   space,
@@ -55,8 +57,8 @@ const styles = stylex.create({
   label: {
     maxWidth: "100%",
     // Three tiles across a small phone leaves about 80px each, so the label shrinks
-    fontSize: { default: 14, [breakpoints.under360]: 13 },
-    lineHeight: { default: "20px", [breakpoints.under360]: "18px" },
+    fontSize: { default: fontSizes.small, [breakpoints.under360]: 13 },
+    lineHeight: { default: lineHeights.small, [breakpoints.under360]: "18px" },
     fontWeight: 700,
     textAlign: "center",
     overflowWrap: "anywhere",

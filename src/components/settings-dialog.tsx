@@ -6,6 +6,8 @@ import type { Ref, SelectHTMLAttributes } from "react";
 import {
   colors,
   fonts,
+  fontSizes,
+  lineHeights,
   radii,
   shadows,
   space,
@@ -52,8 +54,8 @@ const styles = stylex.create({
     gap: space.s16,
   },
   title: {
-    fontSize: 20,
-    lineHeight: "28px",
+    fontSize: fontSizes.title,
+    lineHeight: lineHeights.title,
     fontWeight: 700,
   },
   close: {
@@ -121,14 +123,14 @@ const styles = stylex.create({
     borderColor: colors.textDanger,
   },
   error: {
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     fontWeight: 700,
     color: colors.textDanger,
   },
   hint: {
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     color: colors.textSecondary,
   },
   done: {

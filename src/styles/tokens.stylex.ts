@@ -63,6 +63,23 @@ export const shadows = stylex.defineVars({
   focusRing: "0 0 0 4px rgba(106, 99, 184, 0.22)",
 });
 
+// The type roles in DESIGN.md. Label and small share a size and differ in weight.
+export const fontSizes = stylex.defineVars({
+  overline: "12px",
+  small: "14px",
+  body: "16px",
+  title: "20px",
+  display: "56px",
+});
+
+export const lineHeights = stylex.defineVars({
+  overline: "16px",
+  small: "20px",
+  body: "24px",
+  title: "28px",
+  display: "64px",
+});
+
 // ExtraBold (800) lives in its own file; see src/app/fonts/README.md
 export const fonts = stylex.defineVars({
   sans: "var(--font-lato), system-ui, sans-serif",

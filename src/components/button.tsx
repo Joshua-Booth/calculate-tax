@@ -1,7 +1,15 @@
 import type { StyleXStyles } from "@stylexjs/stylex";
 
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { colors, radii, shadows, space, strokes } from "@/styles/tokens.stylex";
+import {
+  colors,
+  fontSizes,
+  lineHeights,
+  radii,
+  shadows,
+  space,
+  strokes,
+} from "@/styles/tokens.stylex";
 import * as stylex from "@stylexjs/stylex";
 
 import type { IconName } from "./icons";
@@ -17,8 +25,8 @@ const styles = stylex.create({
     paddingBlock: 0,
     paddingInline: space.s24,
     borderRadius: radii.md,
-    fontSize: 16,
-    lineHeight: "24px",
+    fontSize: fontSizes.body,
+    lineHeight: lineHeights.body,
     fontWeight: 700,
     whiteSpace: "nowrap",
     cursor: "pointer",

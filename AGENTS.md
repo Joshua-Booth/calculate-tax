@@ -17,3 +17,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Commits on a branch get a short body with context. PRs are squash-merged, so main gets one subject-only commit.
 
 <!-- git-workflow:end -->
+
+## Pull requests
+
+- Don't put Claude session links in PR descriptions or commit messages.
+- When a change affects what people see or do on screen, put screenshots in the PR description. Show before and after when something changed.

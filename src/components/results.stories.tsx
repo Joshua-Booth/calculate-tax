@@ -5,7 +5,7 @@ import * as stylex from "@stylexjs/stylex";
 import { expect, fn } from "storybook/test";
 
 import type { Inputs, Period } from "@/lib/tax";
-import { formatWholeMoney, PER_PERIOD } from "@/lib/format";
+import { companion } from "@/lib/format";
 import { calculate, KIWISAVER_DEFAULT, perPeriod } from "@/lib/tax";
 
 import { Results } from "./results";
@@ -41,13 +41,12 @@ function resultsFor(overrides: Partial<Inputs>, shown: Period = "year") {
     ...overrides,
   };
   const annual = calculate(inputs);
-  const week = perPeriod(annual, "week", inputs.hoursPerWeek);
   return {
     inputs,
     shown,
     breakdown: perPeriod(annual, shown, inputs.hoursPerWeek),
     hasIncome: annual.gross > 0,
-    companion: `about ${formatWholeMoney(week.takeHome)} ${PER_PERIOD.week}`,
+    companion: companion(annual, shown, inputs.hoursPerWeek),
   };
 }
 

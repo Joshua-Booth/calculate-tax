@@ -19,20 +19,19 @@ import * as stylex from "@stylexjs/stylex";
 
 import type { Inputs, Period, SecondaryCode } from "@/lib/tax";
 import {
+  companion,
   formatAmountInput,
   formatMoney,
-  formatPercent,
-  formatWholeMoney,
   HOURS_PER_WEEK,
   parseAmount,
   parseHours,
   PER_PERIOD,
-  PERIOD_LABEL,
+  PERIOD_OPTIONS,
+  settingsSummary,
 } from "@/lib/format";
 import {
   calculate,
   KIWISAVER_DEFAULT,
-  PERIODS,
   perPeriod,
   TAX_YEAR,
   taxCode,
@@ -323,10 +322,6 @@ const OPTIONS: { key: OptionKey; label: string; icon: IconName }[] = [
   { key: "studentLoan", label: "Student loan", icon: "education" },
   { key: "taxCredits", label: "Tax credits", icon: "currency-dollar" },
 ];
-const PERIOD_OPTIONS = PERIODS.map((value) => ({
-  value,
-  label: PERIOD_LABEL[value],
-}));
 
 // `year` comes from the page at build time, so the footer stays current without a client clock
 export default function Calculator({ year }: { year: number }) {
@@ -369,10 +364,6 @@ export default function Calculator({ year }: { year: number }) {
   const annual = calculate(inputs);
   const shown = shownChoice ?? period;
   const breakdown = perPeriod(annual, shown, hoursPerWeek);
-  // A second figure for scale: a week for a year or month, a year for a week or hour
-  const companionPeriod: Period =
-    shown === "year" || shown === "month" ? "week" : "year";
-  const companion = `about ${formatWholeMoney(perPeriod(annual, companionPeriod, hoursPerWeek).takeHome)} ${PER_PERIOD[companionPeriod]}`;
   const code = taxCode(inputs, annual.gross);
   const hasIncome = annual.gross > 0;
   // Announced to screen readers once typing settles, rather than on every key
@@ -396,14 +387,6 @@ export default function Calculator({ year }: { year: number }) {
     observer.observe(tabs);
     return () => observer.disconnect();
   }, []);
-
-  const summary = [
-    options.kiwiSaver ? `KiwiSaver ${formatPercent(kiwiSaverRate)}` : null,
-    options.secondary ? `Code ${secondaryCode}` : null,
-    `${hoursPerWeek} hours a week`,
-  ]
-    .filter(Boolean)
-    .join(" · ");
 
   function showResults() {
     setTab("results");
@@ -498,7 +481,9 @@ export default function Calculator({ year }: { year: number }) {
               <span {...stylex.props(styles.longLabel)}>Advanced settings</span>
               <span {...stylex.props(styles.shortLabel)}>Settings</span>
             </Button>
-            <span {...stylex.props(styles.summary)}>{summary}</span>
+            <span {...stylex.props(styles.summary)}>
+              {settingsSummary(inputs)}
+            </span>
           </div>
         </section>
 
@@ -518,7 +503,7 @@ export default function Calculator({ year }: { year: number }) {
             shown={shown}
             onShownChange={setShownChoice}
             hasIncome={hasIncome}
-            companion={companion}
+            companion={companion(annual, shown, hoursPerWeek)}
             headingRef={resultsHeadingRef}
           />
         </section>

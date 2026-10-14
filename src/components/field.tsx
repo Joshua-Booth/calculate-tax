@@ -15,6 +15,9 @@ import {
 } from "@/styles/tokens.stylex";
 import * as stylex from "@stylexjs/stylex";
 
+import { formatWholeMoney } from "@/lib/format";
+import { IETC } from "@/lib/tax";
+
 import { Icon } from "./icons";
 
 const styles = stylex.create({
@@ -225,7 +228,8 @@ export function TaxCodeField({ code }: { code: string }) {
           </li>
           <li>
             <strong>ME</strong> adds the independent earner tax credit, for
-            incomes from $24,000 to $70,000.
+            incomes from {formatWholeMoney(IETC.from)} to{" "}
+            {formatWholeMoney(IETC.to)}.
           </li>
           <li>
             <strong>SB, S, SH, ST</strong> and <strong>SA</strong> are for a

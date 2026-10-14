@@ -43,7 +43,7 @@ function cartesian<T extends Record<string, readonly unknown[]>>(
 }
 
 const CODES: SecondaryCode[] = SECONDARY_CODE_OPTIONS.map((o) => o.code);
-const RATES: number[] = KIWISAVER_RATES.map((k) => k.rate);
+const RATES: number[] = [...KIWISAVER_RATES];
 
 // Every on/off mix of the five tiles, each secondary code when it's a second job,
 // and each KiwiSaver rate when KiwiSaver is on

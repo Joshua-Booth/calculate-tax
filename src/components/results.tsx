@@ -18,12 +18,11 @@ import {
   formatPercent,
   formatWholeMoney,
   PER_PERIOD,
-  PERIOD_LABEL,
+  PERIOD_OPTIONS,
 } from "@/lib/format";
 import {
   ACC_LEVY,
   IETC,
-  PERIODS,
   SECONDARY_CODES,
   STUDENT_LOAN,
   TAX_YEAR,
@@ -144,11 +143,6 @@ const series = stylex.create({
 });
 
 type Series = keyof typeof series;
-
-const PERIOD_OPTIONS = PERIODS.map((value) => ({
-  value,
-  label: PERIOD_LABEL[value],
-}));
 
 interface Line {
   key: string;

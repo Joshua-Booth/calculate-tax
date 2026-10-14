@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 
 import type { Metadata, Viewport } from "next";
 import { sx } from "@/styles/sx";
-import { colors, fonts } from "@/styles/tokens.stylex";
+import { colors, fonts, fontSizes, lineHeights } from "@/styles/tokens.stylex";
 import * as stylex from "@stylexjs/stylex";
 
 import "./global.css";
@@ -29,8 +29,8 @@ const styles = stylex.create({
   body: {
     minHeight: "100vh",
     fontFamily: fonts.sans,
-    fontSize: 16,
-    lineHeight: "24px",
+    fontSize: fontSizes.body,
+    lineHeight: lineHeights.body,
     color: colors.textPrimary,
     backgroundColor: colors.surfaceCard,
   },
@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     "Work out your take-home pay in New Zealand, with income tax, the ACC levy, KiwiSaver and student loan repayments, using 2026–27 rates.",
 };
 
+// colors.accentFill, copied because metadata can't read a StyleX variable (tokens.test.ts checks it)
 export const viewport: Viewport = {
   themeColor: "#6a63b8",
 };

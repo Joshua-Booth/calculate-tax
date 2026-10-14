@@ -1,13 +1,16 @@
 "use client";
 
-import { useDeferredValue, useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
+import type { KeyboardEvent } from "react";
 import { a11y } from "@/styles/shared";
 import { sx } from "@/styles/sx";
 import {
   breakpoints,
   colors,
   fonts,
+  fontSizes,
+  lineHeights,
   radii,
   shadows,
   space,
@@ -17,20 +20,19 @@ import * as stylex from "@stylexjs/stylex";
 
 import type { Inputs, Period, SecondaryCode } from "@/lib/tax";
 import {
+  companion,
   formatAmountInput,
   formatMoney,
-  formatPercent,
-  formatWholeMoney,
   HOURS_PER_WEEK,
   parseAmount,
   parseHours,
   PER_PERIOD,
-  PERIOD_LABEL,
+  PERIOD_OPTIONS,
+  settingsSummary,
 } from "@/lib/format";
 import {
   calculate,
   KIWISAVER_DEFAULT,
-  PERIODS,
   perPeriod,
   TAX_YEAR,
   taxCode,
@@ -86,8 +88,14 @@ const styles = stylex.create({
     display: "flex",
     alignItems: "center",
     gap: { default: space.s8, [breakpoints.tabletUp]: space.s12 },
-    fontSize: { default: 14, [breakpoints.tabletUp]: 16 },
-    lineHeight: { default: "20px", [breakpoints.tabletUp]: "24px" },
+    fontSize: {
+      default: fontSizes.small,
+      [breakpoints.tabletUp]: fontSizes.body,
+    },
+    lineHeight: {
+      default: lineHeights.small,
+      [breakpoints.tabletUp]: lineHeights.body,
+    },
     fontWeight: 700,
   },
   mark: {
@@ -113,8 +121,8 @@ const styles = stylex.create({
     borderColor: colors.borderSubtle,
     borderRadius: radii.full,
     backgroundColor: colors.surfaceCard,
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     fontWeight: 700,
     color: colors.textAccent,
     whiteSpace: "nowrap",
@@ -171,8 +179,8 @@ const styles = stylex.create({
   },
   title: {
     fontFamily: fonts.heavy,
-    fontSize: { default: 36, [breakpoints.desktop]: 56 },
-    lineHeight: { default: "44px", [breakpoints.desktop]: "64px" },
+    fontSize: { default: 36, [breakpoints.desktop]: fontSizes.display },
+    lineHeight: { default: "44px", [breakpoints.desktop]: lineHeights.display },
     fontWeight: 800,
     letterSpacing: { default: "-0.005em", [breakpoints.desktop]: "-0.01em" },
   },
@@ -196,8 +204,8 @@ const styles = stylex.create({
     width: "100%",
     marginBottom: space.s12,
     padding: 0,
-    fontSize: 20,
-    lineHeight: "28px",
+    fontSize: fontSizes.title,
+    lineHeight: lineHeights.title,
     fontWeight: 700,
   },
   // Explicit columns: three and two on phones, as in the design, then all five
@@ -237,8 +245,8 @@ const styles = stylex.create({
     flexGrow: 1,
     flexShrink: 1,
     flexBasis: { default: "100%", [breakpoints.tabletUp]: 200 },
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     color: colors.textSecondary,
   },
   tabs: {
@@ -278,8 +286,8 @@ const styles = stylex.create({
     borderBottomStyle: "solid",
     borderBottomColor: colors.borderSubtle,
     backgroundColor: "transparent",
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     fontWeight: 700,
     color: colors.textSecondary,
     cursor: "pointer",
@@ -290,8 +298,8 @@ const styles = stylex.create({
   },
   footer: {
     paddingBottom: space.s24,
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     color: colors.textSecondary,
     textAlign: "center",
   },
@@ -306,7 +314,16 @@ const styles = stylex.create({
 
 type OptionKey =
   "acc" | "kiwiSaver" | "secondary" | "studentLoan" | "taxCredits";
-type Tab = "details" | "results";
+
+const TABS = ["details", "results"] as const;
+type Tab = (typeof TABS)[number];
+const TAB_LABEL: Record<Tab, string> = {
+  details: "Details",
+  results: "Results",
+};
+
+// Long enough to outlast a pause between keys, so a typed amount is read once
+const ANNOUNCE_DELAY_MS = 500;
 
 const OPTIONS: { key: OptionKey; label: string; icon: IconName }[] = [
   { key: "acc", label: "ACC levy", icon: "stethoscope" },
@@ -315,10 +332,32 @@ const OPTIONS: { key: OptionKey; label: string; icon: IconName }[] = [
   { key: "studentLoan", label: "Student loan", icon: "education" },
   { key: "taxCredits", label: "Tax credits", icon: "currency-dollar" },
 ];
-const PERIOD_OPTIONS = PERIODS.map((value) => ({
-  value,
-  label: PERIOD_LABEL[value],
-}));
+
+/**
+ * Where a key moves along the tabs, wrapping round at either end.
+ * @param key - The key pressed
+ * @param current - The selected tab's index
+ * @returns The index of the tab to select, or null for any other key
+ */
+function tabFor(key: string, current: number) {
+  switch (key) {
+    case "ArrowLeft": {
+      return (current - 1 + TABS.length) % TABS.length;
+    }
+    case "ArrowRight": {
+      return (current + 1) % TABS.length;
+    }
+    case "Home": {
+      return 0;
+    }
+    case "End": {
+      return TABS.length - 1;
+    }
+    default: {
+      return null;
+    }
+  }
+}
 
 // `year` comes from the page at build time, so the footer stays current without a client clock
 export default function Calculator({ year }: { year: number }) {
@@ -337,15 +376,13 @@ export default function Calculator({ year }: { year: number }) {
   const [secondaryCode, setSecondaryCode] = useState<SecondaryCode>("S");
   const [tab, setTab] = useState<Tab>("details");
   const [tabsStuck, setTabsStuck] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
-  const detailsTabId = useId();
-  const resultsTabId = useId();
-  const detailsPanelId = useId();
-  const resultsPanelId = useId();
-  const tabIds = { details: detailsTabId, results: resultsTabId };
-  const panelIds = { details: detailsPanelId, results: resultsPanelId };
+  const id = useId();
+  const tabId = (t: Tab) => `${id}tab-${t}`;
+  const panelId = (t: Tab) => `${id}panel-${t}`;
 
   // Until the hours are valid, the sums use a 40-hour week (the dialog says so)
   const hoursPerWeek = parseHours(hoursText) ?? HOURS_PER_WEEK.fallback;
@@ -361,18 +398,20 @@ export default function Calculator({ year }: { year: number }) {
   const annual = calculate(inputs);
   const shown = shownChoice ?? period;
   const breakdown = perPeriod(annual, shown, hoursPerWeek);
-  // A second figure for scale: a week for a year or month, a year for a week or hour
-  const companionPeriod: Period =
-    shown === "year" || shown === "month" ? "week" : "year";
-  const companion = `about ${formatWholeMoney(perPeriod(annual, companionPeriod, hoursPerWeek).takeHome)} ${PER_PERIOD[companionPeriod]}`;
   const code = taxCode(inputs, annual.gross);
   const hasIncome = annual.gross > 0;
+  const takeHomeText = hasIncome
+    ? `Take-home pay ${formatMoney(breakdown.takeHome)} ${PER_PERIOD[shown]}`
+    : "";
+
   // Announced to screen readers once typing settles, rather than on every key
-  const announcement = useDeferredValue(
-    hasIncome
-      ? `Take-home pay ${formatMoney(breakdown.takeHome)} ${PER_PERIOD[shown]}`
-      : ""
-  );
+  useEffect(() => {
+    const timer = setTimeout(
+      () => setAnnouncement(takeHomeText),
+      ANNOUNCE_DELAY_MS
+    );
+    return () => clearTimeout(timer);
+  }, [takeHomeText]);
 
   // The tab bar sticks to the bottom of a screen too short for the pane. With the
   // viewport's bottom edge pulled up 1px, a stuck bar never fits inside it, while a
@@ -389,20 +428,22 @@ export default function Calculator({ year }: { year: number }) {
     return () => observer.disconnect();
   }, []);
 
-  const summary = [
-    options.kiwiSaver ? `KiwiSaver ${formatPercent(kiwiSaverRate)}` : null,
-    options.secondary ? `Code ${secondaryCode}` : null,
-    `${hoursPerWeek} hours a week`,
-  ]
-    .filter(Boolean)
-    .join(" · ");
-
   function showResults() {
     setTab("results");
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0 });
       resultsHeadingRef.current?.focus();
     });
+  }
+
+  // Arrow keys, Home and End move between the tabs, as screen reader users expect
+  function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
+    const next = tabFor(event.key, TABS.indexOf(tab));
+    if (next === null) return;
+    event.preventDefault();
+    const nextTab = TABS[next] ?? tab;
+    setTab(nextTab);
+    document.getElementById(tabId(nextTab))?.focus();
   }
 
   function formatIncome() {
@@ -428,14 +469,14 @@ export default function Calculator({ year }: { year: number }) {
 
       <main {...stylex.props(styles.card)}>
         <section
-          id={panelIds.details}
+          id={panelId("details")}
           {...stylex.props(
             styles.pane,
             styles.details,
             tab !== "details" && styles.paneHidden
           )}
           role="tabpanel"
-          aria-labelledby={tabIds.details}
+          aria-labelledby={tabId("details")}
         >
           <div {...stylex.props(styles.heading)}>
             <h1 {...stylex.props(styles.title)}>Tax Calculator</h1>
@@ -490,19 +531,21 @@ export default function Calculator({ year }: { year: number }) {
               <span {...stylex.props(styles.longLabel)}>Advanced settings</span>
               <span {...stylex.props(styles.shortLabel)}>Settings</span>
             </Button>
-            <span {...stylex.props(styles.summary)}>{summary}</span>
+            <span {...stylex.props(styles.summary)}>
+              {settingsSummary(inputs)}
+            </span>
           </div>
         </section>
 
         <section
-          id={panelIds.results}
+          id={panelId("results")}
           {...stylex.props(
             styles.pane,
             styles.results,
             tab !== "results" && styles.paneHidden
           )}
           role="tabpanel"
-          aria-labelledby={tabIds.results}
+          aria-labelledby={tabId("results")}
         >
           <Results
             breakdown={breakdown}
@@ -510,7 +553,7 @@ export default function Calculator({ year }: { year: number }) {
             shown={shown}
             onShownChange={setShownChoice}
             hasIncome={hasIncome}
-            companion={companion}
+            companion={companion(annual, shown, hoursPerWeek)}
             headingRef={resultsHeadingRef}
           />
         </section>
@@ -521,18 +564,20 @@ export default function Calculator({ year }: { year: number }) {
           role="tablist"
           aria-label="Calculator"
         >
-          {(["details", "results"] as const).map((t) => (
+          {TABS.map((t) => (
             <button
               key={t}
-              id={tabIds[t]}
+              id={tabId(t)}
               type="button"
               role="tab"
+              tabIndex={tab === t ? 0 : -1}
               aria-selected={tab === t}
-              aria-controls={panelIds[t]}
+              aria-controls={panelId(t)}
               {...stylex.props(styles.tab, tab === t && styles.tabSelected)}
               onClick={() => (t === "results" ? showResults() : setTab(t))}
+              onKeyDown={onTabKeyDown}
             >
-              {t === "details" ? "Details" : "Results"}
+              {TAB_LABEL[t]}
             </button>
           ))}
         </div>

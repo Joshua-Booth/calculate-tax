@@ -1,7 +1,14 @@
 "use client";
 
 import type { Ref } from "react";
-import { colors, radii, space, strokes } from "@/styles/tokens.stylex";
+import {
+  colors,
+  fontSizes,
+  lineHeights,
+  radii,
+  space,
+  strokes,
+} from "@/styles/tokens.stylex";
 import * as stylex from "@stylexjs/stylex";
 
 import type { Breakdown, Inputs, Period } from "@/lib/tax";
@@ -11,12 +18,11 @@ import {
   formatPercent,
   formatWholeMoney,
   PER_PERIOD,
-  PERIOD_LABEL,
+  PERIOD_OPTIONS,
 } from "@/lib/format";
 import {
   ACC_LEVY,
   IETC,
-  PERIODS,
   SECONDARY_CODES,
   STUDENT_LOAN,
   TAX_YEAR,
@@ -31,8 +37,8 @@ const styles = stylex.create({
     containerType: "inline-size",
   },
   overline: {
-    fontSize: 12,
-    lineHeight: "16px",
+    fontSize: fontSizes.overline,
+    lineHeight: lineHeights.overline,
     fontWeight: 700,
     letterSpacing: "0.08em",
     textTransform: "uppercase",
@@ -107,8 +113,8 @@ const styles = stylex.create({
   },
   note: {
     marginLeft: "auto",
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     color: colors.textSecondary,
   },
   value: {
@@ -121,8 +127,8 @@ const styles = stylex.create({
     color: colors.textAccent,
   },
   footnote: {
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     color: colors.textSecondary,
   },
 });
@@ -137,11 +143,6 @@ const series = stylex.create({
 });
 
 type Series = keyof typeof series;
-
-const PERIOD_OPTIONS = PERIODS.map((value) => ({
-  value,
-  label: PERIOD_LABEL[value],
-}));
 
 interface Line {
   key: string;

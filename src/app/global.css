@@ -1,6 +1,7 @@
 /* Plain CSS only for what StyleX doesn't cover: the reset, native element defaults
    and backdrops. Every StyleX style lands in a later layer, so it always wins.
-   The colours here are copied from src/styles/tokens.stylex.ts; keep them in sync. */
+   The colours here are copied from src/styles/tokens.stylex.ts, and
+   src/styles/tokens.test.ts checks they still match. */
 @layer reset;
 
 @layer reset {

@@ -2,8 +2,7 @@ import { figma } from "@/storybook/figma";
 import preview from "@/storybook/preview";
 import { expect, fn } from "storybook/test";
 
-import { PERIOD_LABEL } from "@/lib/format";
-import { PERIODS } from "@/lib/tax";
+import { PERIOD_OPTIONS } from "@/lib/format";
 
 import { SegmentedControl } from "./segmented-control";
 
@@ -13,7 +12,7 @@ const meta = preview.meta({
   args: {
     legend: "Income is per",
     name: "income-period",
-    options: PERIODS.map((value) => ({ value, label: PERIOD_LABEL[value] })),
+    options: PERIOD_OPTIONS,
     value: "year",
     onChange: fn(),
   },

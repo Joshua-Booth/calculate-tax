@@ -6,6 +6,9 @@ import {
   calculate,
   incomeTax,
   independentEarnerTaxCredit,
+  KIWISAVER_DEFAULT,
+  KIWISAVER_RATES,
+  KIWISAVER_REDUCED,
   perPeriod,
   studentLoanRepayment,
   taxCode,
@@ -70,6 +73,13 @@ describe("independent earner tax credit", () => {
   it("pays nothing outside the range", () => {
     expect(independentEarnerTaxCredit(23_999)).toBe(0);
     expect(independentEarnerTaxCredit(70_001)).toBe(0);
+  });
+});
+
+describe("KiwiSaver rates", () => {
+  it("offers the default and the reduced rate", () => {
+    expect(KIWISAVER_RATES).toContain(KIWISAVER_DEFAULT);
+    expect(KIWISAVER_RATES).toContain(KIWISAVER_REDUCED);
   });
 });
 

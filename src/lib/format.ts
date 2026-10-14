@@ -1,4 +1,5 @@
-import type { Period } from "./tax";
+import type { Breakdown, Inputs, Period } from "./tax";
+import { PERIODS, perPeriod } from "./tax";
 
 const money = new Intl.NumberFormat("en-NZ", {
   style: "currency",
@@ -75,7 +76,7 @@ export function parseHours(text: string) {
     : null;
 }
 
-export const PERIOD_LABEL: Record<Period, string> = {
+const PERIOD_LABEL: Record<Period, string> = {
   hour: "Hour",
   week: "Week",
   fortnight: "Fortnight",
@@ -89,6 +90,55 @@ export const PER_PERIOD: Record<Period, string> = {
   month: "a month",
   year: "a year",
 };
+
+export const PERIOD_OPTIONS = PERIODS.map((value) => ({
+  value,
+  label: PERIOD_LABEL[value],
+}));
+
+/**
+ * A second take-home figure for scale: a week beside a year or month, and a
+ * year beside the rest.
+ * @param annual - The breakdown for a year
+ * @param shown - The period the main figure is for
+ * @param hoursPerWeek - Hours worked a week, used for hourly amounts
+ * @returns Text like "about $1,064 a week"
+ */
+export function companion(
+  annual: Breakdown,
+  shown: Period,
+  hoursPerWeek: number
+) {
+  const period = shown === "year" || shown === "month" ? "week" : "year";
+  const { takeHome } = perPeriod(annual, period, hoursPerWeek);
+  return `about ${formatWholeMoney(takeHome)} ${PER_PERIOD[period]}`;
+}
+
+/**
+ * The advanced settings in play, shown beside the button that changes them.
+ * @param inputs - The KiwiSaver, secondary code and hours settings
+ * @returns Text like "KiwiSaver 3.5% · 40 hours a week"
+ */
+export function settingsSummary(
+  inputs: Pick<
+    Inputs,
+    | "hoursPerWeek"
+    | "kiwiSaver"
+    | "kiwiSaverRate"
+    | "secondary"
+    | "secondaryCode"
+  >
+) {
+  return [
+    inputs.kiwiSaver
+      ? `KiwiSaver ${formatPercent(inputs.kiwiSaverRate)}`
+      : null,
+    inputs.secondary ? `Code ${inputs.secondaryCode}` : null,
+    `${inputs.hoursPerWeek} hours a week`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
 
 /**
  * Turns what someone types into a number. Commas, spaces and a $ sign are

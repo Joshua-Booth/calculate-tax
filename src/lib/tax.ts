@@ -50,15 +50,9 @@ function secondaryCodeOptions() {
 export const SECONDARY_CODE_OPTIONS = secondaryCodeOptions();
 
 // 3.5% is the default from 1 April 2026; 3% needs a temporary rate reduction.
-export const KIWISAVER_RATES = [
-  { rate: 0.03, isDefault: false },
-  { rate: 0.035, isDefault: true },
-  { rate: 0.04, isDefault: false },
-  { rate: 0.06, isDefault: false },
-  { rate: 0.08, isDefault: false },
-  { rate: 0.1, isDefault: false },
-] as const;
+export const KIWISAVER_RATES = [0.03, 0.035, 0.04, 0.06, 0.08, 0.1] as const;
 export const KIWISAVER_DEFAULT = 0.035;
+export const KIWISAVER_REDUCED = 0.03;
 
 // Fortnight, not "biweekly": it is what NZ payroll and Inland Revenue call it
 export const PERIODS = ["hour", "week", "fortnight", "month", "year"] as const;
@@ -77,13 +71,16 @@ export interface Inputs {
   taxCredits: boolean;
 }
 
-export interface Breakdown {
+interface Lines {
   gross: number;
   incomeTax: number;
   acc: number;
   kiwiSaver: number;
   studentLoan: number;
   taxCredit: number;
+}
+
+export interface Breakdown extends Lines {
   takeHome: number;
 }
 
@@ -94,6 +91,17 @@ export interface Breakdown {
  */
 export const cents = (n: number) =>
   Math.round((n + Number.EPSILON) * 100) / 100;
+
+// Worked out from the rounded lines, so the rows always add up
+function withTakeHome(lines: Lines): Breakdown {
+  const { gross, incomeTax, acc, kiwiSaver, studentLoan, taxCredit } = lines;
+  return {
+    ...lines,
+    takeHome: cents(
+      gross - incomeTax - acc - kiwiSaver - studentLoan + taxCredit
+    ),
+  };
+}
 
 function periodsPerYear(period: Period, hoursPerWeek: number) {
   switch (period) {
@@ -221,15 +229,14 @@ export function calculate(inputs: Inputs): Breakdown {
     inputs.taxCredits && !inputs.secondary
       ? cents(independentEarnerTaxCredit(gross))
       : 0;
-  return {
+  return withTakeHome({
     gross,
     incomeTax: tax,
     acc,
     kiwiSaver,
     studentLoan,
     taxCredit,
-    takeHome: cents(gross - tax - acc - kiwiSaver - studentLoan + taxCredit),
-  };
+  });
 }
 
 /**
@@ -247,23 +254,12 @@ export function perPeriod(
 ): Breakdown {
   const n = periodsPerYear(period, hoursPerWeek);
   const p = (v: number) => cents(v / n);
-  const out = {
+  return withTakeHome({
     gross: p(annual.gross),
     incomeTax: p(annual.incomeTax),
     acc: p(annual.acc),
     kiwiSaver: p(annual.kiwiSaver),
     studentLoan: p(annual.studentLoan),
     taxCredit: p(annual.taxCredit),
-  };
-  return {
-    ...out,
-    takeHome: cents(
-      out.gross -
-        out.incomeTax -
-        out.acc -
-        out.kiwiSaver -
-        out.studentLoan +
-        out.taxCredit
-    ),
-  };
+  });
 }

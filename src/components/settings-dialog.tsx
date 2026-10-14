@@ -6,6 +6,8 @@ import type { Ref, SelectHTMLAttributes } from "react";
 import {
   colors,
   fonts,
+  fontSizes,
+  lineHeights,
   radii,
   shadows,
   space,
@@ -21,7 +23,9 @@ import {
   parseHours,
 } from "@/lib/format";
 import {
+  KIWISAVER_DEFAULT,
   KIWISAVER_RATES,
+  KIWISAVER_REDUCED,
   SECONDARY_CODE_OPTIONS,
   SECONDARY_CODES,
 } from "@/lib/tax";
@@ -52,8 +56,8 @@ const styles = stylex.create({
     gap: space.s16,
   },
   title: {
-    fontSize: 20,
-    lineHeight: "28px",
+    fontSize: fontSizes.title,
+    lineHeight: lineHeights.title,
     fontWeight: 700,
   },
   close: {
@@ -121,14 +125,14 @@ const styles = stylex.create({
     borderColor: colors.textDanger,
   },
   error: {
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     fontWeight: 700,
     color: colors.textDanger,
   },
   hint: {
-    fontSize: 14,
-    lineHeight: "20px",
+    fontSize: fontSizes.small,
+    lineHeight: lineHeights.small,
     color: colors.textSecondary,
   },
   done: {
@@ -220,16 +224,15 @@ export function SettingsDialog({
             value={kiwiSaverRate}
             onChange={(e) => onKiwiSaverRateChange(Number(e.target.value))}
           >
-            {KIWISAVER_RATES.map(({ rate, isDefault }) => (
+            {KIWISAVER_RATES.map((rate) => (
               <option key={rate} value={rate}>
                 {formatPercent(rate)}
-                {isDefault ? " (default)" : ""}
+                {rate === KIWISAVER_DEFAULT ? " (default)" : ""}
               </option>
             ))}
           </Select>
           <p {...stylex.props(styles.hint)}>
-            3.5% is the default from 1 April 2026. 3% needs a temporary rate
-            reduction.
+            {`${formatPercent(KIWISAVER_DEFAULT)} is the default from 1 April 2026. ${formatPercent(KIWISAVER_REDUCED)} needs a temporary rate reduction.`}
           </p>
         </div>
 
@@ -245,8 +248,8 @@ export function SettingsDialog({
             )}
             type="number"
             inputMode="decimal"
-            min={1}
-            max={168}
+            min={HOURS_PER_WEEK.min}
+            max={HOURS_PER_WEEK.max}
             step={0.5}
             value={hoursText}
             onChange={(e) => onHoursChange(e.target.value)}

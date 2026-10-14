@@ -104,3 +104,55 @@ export const ShortPhoneResults = meta.story({
     await waitFor(() => expect(shadow()).not.toBe("none"));
   },
 });
+
+// Screen readers hear the take-home pay once, after typing stops, not for each digit
+export const AnnouncesOnceTypingStops = meta.story({
+  parameters: figma("6213:14"),
+  globals: { viewport: { value: "desktop" } },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const region = canvasElement.querySelector("[aria-live]");
+    if (!region) throw new Error("The calculator has no live region");
+    const heard: string[] = [];
+    const observer = new MutationObserver(() => {
+      heard.push(region.textContent);
+    });
+    observer.observe(region, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+    await userEvent.type(
+      canvas.getByRole("textbox", { name: "Income" }),
+      "85000"
+    );
+    await waitFor(() =>
+      expect(region).toHaveTextContent("Take-home pay $65,585.00 a year")
+    );
+    observer.disconnect();
+    await expect(heard).toEqual(["Take-home pay $65,585.00 a year"]);
+  },
+});
+
+// Arrow keys, Home and End move between the tabs and select them
+export const PhoneTabKeys = meta.story({
+  parameters: figma("6214:98"),
+  globals: { viewport: { value: "phone" } },
+  play: async ({ canvas, userEvent }) => {
+    const details = canvas.getByRole("tab", { name: "Details" });
+    const results = canvas.getByRole("tab", { name: "Results" });
+    details.focus();
+    await expect(results).toHaveAttribute("tabindex", "-1");
+
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(results).toHaveFocus();
+    await expect(results).toHaveAttribute("aria-selected", "true");
+    await expect(details).toHaveAttribute("tabindex", "-1");
+
+    await userEvent.keyboard("{Home}");
+    await expect(details).toHaveFocus();
+    await expect(details).toHaveAttribute("aria-selected", "true");
+
+    await userEvent.keyboard("{ArrowLeft}");
+    await expect(results).toHaveFocus();
+  },
+});

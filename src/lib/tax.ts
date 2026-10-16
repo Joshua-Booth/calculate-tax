@@ -35,19 +35,16 @@ export const SECONDARY_CODES = Object.fromEntries(
   INCOME_TAX_BANDS.map((band) => [band.secondaryCode, band.rate])
 ) as Record<SecondaryCode, number>;
 
-/**
- * Each secondary code with its rate and the total income it's for.
- * @returns Codes in band order, each with the income range it covers
- */
-function secondaryCodeOptions() {
-  let from = 0;
-  return INCOME_TAX_BANDS.map(({ secondaryCode, rate, upTo }) => {
-    const option = { code: secondaryCode, rate, from, upTo };
-    from = upTo + 1;
-    return option;
-  });
-}
-export const SECONDARY_CODE_OPTIONS = secondaryCodeOptions();
+export const SECONDARY_CODE_OPTIONS = INCOME_TAX_BANDS.map(
+  ({ secondaryCode, upTo }, index) => {
+    const previous = INCOME_TAX_BANDS[index - 1];
+    return {
+      code: secondaryCode,
+      from: previous === undefined ? 0 : previous.upTo + 1,
+      upTo,
+    };
+  }
+);
 
 // 3.5% is the default from 1 April 2026; 3% needs a temporary rate reduction.
 export const KIWISAVER_RATES = [0.03, 0.035, 0.04, 0.06, 0.08, 0.1] as const;

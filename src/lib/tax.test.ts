@@ -142,8 +142,9 @@ describe("calculate", () => {
       acc: false,
       taxCredits: true,
     });
+    expect(b.incomeTax).toBe(7_658);
     expect(b.taxCredit).toBe(520);
-    expect(b.takeHome).toBe(cents2(50_000 - incomeTax(50_000) + 520));
+    expect(b.takeHome).toBe(42_862);
   });
   it("handles an empty income", () => {
     expect(calculate({ ...base, income: Number.NaN }).takeHome).toBe(0);
@@ -177,7 +178,3 @@ describe("per period", () => {
     });
   });
 });
-
-function cents2(n: number) {
-  return Math.round(n * 100) / 100;
-}
